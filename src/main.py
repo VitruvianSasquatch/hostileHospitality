@@ -1,10 +1,18 @@
+import os
+import sys
 import pygame
 
-WIDTH = 800 # VGA standard as default
-HEIGHT = 600 
+WINDOW_DIMENSIONS = (800, 600) # VGA standard as default
 
 def main():
-	window = pygame.display.set_mode((WIDTH, HEIGHT))
+	pygame.init()
+	window = pygame.display.set_mode(WINDOW_DIMENSIONS)
+	pygame.display.set_caption("Hostile Hospitality")
+
+
+	initInput()
+
+	world = World()
 
 	ticks = 0
 
@@ -15,13 +23,19 @@ def main():
 		for event in pygame.event.get():
 			isGameRunning = handleEvent(event) # I can't remember how to pass references in Python
 
-		print(ticks)
 		ticks += 1
+
+		world.draw(window)
 		pygame.display.flip()
 
 	pygame.quit()
 	# implicit return 0
 
+
+def initInput():
+	pygame.mouse.set_visible(True)
+	
+	#TODO: Decide on and implement keyboard input options
 
 
 def handleEvent(event):
@@ -29,7 +43,24 @@ def handleEvent(event):
 		print("Exiting")
 		return False # isGameRunning
 	else:
-		return True # FIXME: Pass state by reference
+		return True #FIXME: Pass state by reference
+
+
+
+class World:
+
+	def __init__(self):
+		pass
+
+	def draw(self, window):
+		background = pygame.Surface(window.get_size()).convert()
+		background.fill((0, 128, 0)) # Placeholder green background, likely remove when tiling is written
+		window.blit(background, (0, 0))
+
+		
+
+
+
 
 
 main()
