@@ -8,7 +8,7 @@ from world import *
 def walk_direct(start_pos, end_pos, grid=None):
     route = []
     current = list(start_pos)
-    print(current)
+    #print(current)
     route.append((current[0], current[1]))
     while(current != list(end_pos)):
         #move
@@ -17,7 +17,7 @@ def walk_direct(start_pos, end_pos, grid=None):
         elif current[0] < end_pos[0]:
             current[0] += 1
 
-        if current[1] > end_pos[1]:
+        elif current[1] > end_pos[1]: # change to if to move diagonally.
             current[1] -= 1
         elif current[1] < end_pos[1]:
             current[1] += 1
@@ -25,7 +25,7 @@ def walk_direct(start_pos, end_pos, grid=None):
         if(current in route):
             print("character unable to pathfind. movement haulted.")
             break
-        print(current)
+        #print(current)
         route.append((current[0], current[1]))
 
 
