@@ -19,7 +19,7 @@ def walk_direct(start_pos, end_pos, grid=None):
 
         if current[1] > end_pos[1]:
             current[1] -= 1
-        elif current[1] > end_pos[1]:
+        elif current[1] < end_pos[1]:
             current[1] += 1
 
         if(current in route):
@@ -39,4 +39,4 @@ def test_pathing():
     print(route)
 
 
-test_pathing() #its stuck in a loop rn help
+test_pathing()
