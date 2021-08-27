@@ -35,3 +35,7 @@ class World:
 		oldConstruct = self.constructGrid[x][y]
 		self.constructGrid[x][y] = construct
 		return oldConstruct
+
+
+	def getCollisionGrid(self):
+		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]

@@ -27,6 +27,7 @@ def main():
 
 	construct = Construct((128, 64, 16))
 	world.placeConstruct(construct, (6, 5))
+	print(world.getCollisionGrid())
 
 
 	isGameRunning = True
