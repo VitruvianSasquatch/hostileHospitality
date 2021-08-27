@@ -33,7 +33,7 @@ def main():
 	world.placeConstruct(construct, (6, 5))
 
 	enemy = Enemy("RED", (3, 4))
-	enemy.moveToDistant((7, 7))
+	enemy.moveToDistant((7, 8))
 
 	viewOffset = (0, 0)
 
