@@ -2,9 +2,12 @@ import os
 import sys
 import pygame
 
+from construct import *
 from world import *
 
-WINDOW_DIMENSIONS = (800, 600) # VGA standard as default
+WINDOW_DIMENSIONS = (1280, 960) # VGA standard as default
+
+TILESIZE = 64
 
 
 def main():
@@ -16,7 +19,14 @@ def main():
 
 	initInput()
 
-	world = World()
+	# Ensure map all fits on one screen
+	mapWidth, mapHeight = WINDOW_DIMENSIONS
+	mapWidth //= TILESIZE
+	mapHeight //= TILESIZE
+	world = World((mapWidth, mapHeight))
+
+	construct = Construct((128, 64, 16))
+	world.placeConstruct(construct, (6, 5))
 
 
 	isGameRunning = True
@@ -27,7 +37,7 @@ def main():
 		for event in pygame.event.get():
 			isGameRunning = handleEvent(event) # I can't remember how to pass references in Python
 
-		world.draw(window)
+		world.draw(window, TILESIZE, (0, 0))
 		pygame.display.flip()
 
 	pygame.quit()

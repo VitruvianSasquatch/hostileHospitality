@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 
+from construct import *
 
 class World:	
 
@@ -19,8 +20,9 @@ class World:
 		x, y = viewWindowOffset
 		for i in range(0, self.width):
 			for j in range(0, self.height):
-				rect = pygame.Rect(x+tileSize*i, y+tileSize*j, x+(tilesize+1)*i, y+(tileSize+1)*j)
-				pygame.draw.rect(background, self.constructGrid[i][j].colour, rect)
+				if self.constructGrid[i][j]:
+					rect = pygame.Rect(x+tileSize*i, y+tileSize*j, tileSize, tileSize)
+					pygame.draw.rect(background, self.constructGrid[i][j].colour, rect)
 		
 		window.blit(background, (0, 0))
 		
@@ -28,8 +30,8 @@ class World:
 
 
 	# Places construct, returns whatever is overwritten
-	def placeObject(self, construct, position):
+	def placeConstruct(self, construct, position):
 		x, y = position
-		oldConstruct = constructGrid[x][y]
-		constructGrid[x][y] = construct
+		oldConstruct = self.constructGrid[x][y]
+		self.constructGrid[x][y] = construct
 		return oldConstruct
