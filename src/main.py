@@ -15,17 +15,14 @@ def main():
 
 	world = World()
 
-	ticks = 0
 
 	isGameRunning = True
 	while isGameRunning:
-		clock.tick(60)
+		dt = clock.tick(60)
 
 		# Handle inputs
 		for event in pygame.event.get():
 			isGameRunning = handleEvent(event) # I can't remember how to pass references in Python
-
-		ticks += 1
 
 		world.draw(window)
 		pygame.display.flip()
