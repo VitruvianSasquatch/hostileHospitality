@@ -6,8 +6,7 @@ from construct import *
 from ui import *
 from world import *
 
-WINDOW_DIMENSIONS = (1280, 960) # VGA standard as default
-
+WINDOW_DIMENSIONS = (1280, 960)
 TILESIZE = 64
 
 
@@ -31,8 +30,8 @@ def main():
 
 	construct = Construct((128, 64, 16))
 	world.placeConstruct(construct, (6, 5))
-	print(world.getCollisionGrid())
 
+	viewOffset = (0, 0)
 
 	isGameRunning = True
 	while isGameRunning:
@@ -42,12 +41,13 @@ def main():
 		for event in pygame.event.get():
 			isGameRunning = handleEvent(event, buildMenu)
 
-		world.draw(window, TILESIZE, (0, 0))
+		window.blit(world.draw(window, TILESIZE), viewOffset)
 		buildMenu.draw(window)
 		pygame.display.flip()
 
 	pygame.quit()
-	# implicit return 0
+	# implicit exit()
+
 
 
 def initInput():
@@ -66,10 +66,6 @@ def handleEvent(event, buildMenu):
 		# buildMenu.mouseEvent returns True if it handled the event					
 
 	return True
-
-
-
-
 
 
 

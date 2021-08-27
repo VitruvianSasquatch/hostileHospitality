@@ -4,7 +4,7 @@ import pygame
 
 from construct import *
 
-class World:	
+class World: 
 
 
 	def __init__(self, size):
@@ -12,22 +12,17 @@ class World:
 		self.constructGrid =  [[None for j in range(0, self.height)] for i in range(0, self.width)]
 
 
-	def draw(self, window, tileSize, viewWindowOffset):
-		background = pygame.Surface(window.get_size()).convert()
-		solidGreen = window.copy()
-		solidGreen.fill((0,128,0))
-		background.blit(solidGreen, viewWindowOffset)
-		#background.fill((0, 128, 0)) # Placeholder green background, likely remove when tiling is written
+	def draw(self, window, tileSize):
+		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))
+		drawBackground(surface, (0, 128,0))
 
-
-		x, y = viewWindowOffset
 		for i in range(0, self.width):
 			for j in range(0, self.height):
 				if self.constructGrid[i][j]:
-					rect = pygame.Rect(x+tileSize*i, y+tileSize*j, tileSize, tileSize)
-					pygame.draw.rect(background, self.constructGrid[i][j].colour, rect)
+					rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
+					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
 		
-		window.blit(background, (0, 0))
+		return surface
 		
 
 
@@ -45,7 +40,13 @@ class World:
 	def getCollisionGrid(self):
 		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]
 
-	def getCoordinate(self, position, tileSize, viewWindowOffset):
-		x = (position[0] - viewWindowOffset[0]) // tileSize
-		y = (position[1] - viewWindowOffset[1]) // tileSize
+	def getCoordinate(self, queryPosition, tileSize, viewOffset):
+		x = (queryPosition[0] - viewOffset[0]) // tileSize
+		y = (queryPosition[1] - viewOffset[1]) // tileSize
 		return (int(x),int(y))
+
+
+def drawBackground(surface, colour):
+	background = surface.copy()
+	background.fill(colour)
+	surface.blit(background, (0, 0))
