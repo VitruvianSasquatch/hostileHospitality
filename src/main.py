@@ -5,6 +5,7 @@ import pygame
 from construct import *
 from ui import *
 from world import *
+from enemy import *
 
 WINDOW_DIMENSIONS = (1280, 960)
 TILESIZE = 64
@@ -31,17 +32,21 @@ def main():
 	construct = Construct((128, 64, 16))
 	world.placeConstruct(construct, (6, 5))
 
+	enemy = Enemy("RED", (3, 4))
+	enemy.move((4, 5))
+
 	viewOffset = (0, 0)
 
 	isGameRunning = True
 	while isGameRunning:
-		dt = clock.tick(60)
+		dt = clock.tick(60) / 1000
 
 		# Handle inputs
 		for event in pygame.event.get():
 			isGameRunning = handleEvent(event, buildMenu)
 
 		window.blit(world.draw(window, TILESIZE), viewOffset)
+		enemy.draw(window, TILESIZE, dt)
 		buildMenu.draw(window)
 		pygame.display.flip()
 
