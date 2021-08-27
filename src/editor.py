@@ -94,7 +94,7 @@ def main():
 		worldOffset[0] += worldOffsetDt[0] * dt * 200
 		worldOffset[1] += worldOffsetDt[1] * dt * 200
 
-		world.draw(window, TILESIZE, worldOffset)
+		window.blit(world.draw(window, TILESIZE), worldOffset)
 
 		if (currentCoords != (-1, -1)):
 			x = currentCoords[0] * TILESIZE + worldOffset[0]
