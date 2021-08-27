@@ -14,7 +14,10 @@ class World:
 
 	def draw(self, window, tileSize, viewWindowOffset):
 		background = pygame.Surface(window.get_size()).convert()
-		background.fill((0, 128, 0)) # Placeholder green background, likely remove when tiling is written
+		solidGreen = window.copy()
+		solidGreen.fill((0,128,0))
+		background.blit(solidGreen, viewWindowOffset)
+		#background.fill((0, 128, 0)) # Placeholder green background, likely remove when tiling is written
 
 
 		x, y = viewWindowOffset
@@ -32,9 +35,11 @@ class World:
 	# Places construct, returns whatever is overwritten
 	def placeConstruct(self, construct, position):
 		x, y = position
-		oldConstruct = self.constructGrid[x][y]
-		self.constructGrid[x][y] = construct
-		return oldConstruct
+		if (x < self.width and y < self.height):
+			oldConstruct = self.constructGrid[x][y]
+			self.constructGrid[x][y] = construct
+			return oldConstruct
+		return None
 
 
 	def getCollisionGrid(self):
@@ -43,4 +48,4 @@ class World:
 	def getCoordinate(self, position, tileSize, viewWindowOffset):
 		x = (position[0] - viewWindowOffset[0]) // tileSize
 		y = (position[1] - viewWindowOffset[1]) // tileSize
-		return (x,y)
+		return (int(x),int(y))
