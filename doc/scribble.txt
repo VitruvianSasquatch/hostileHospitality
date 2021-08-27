@@ -1,0 +1,6 @@
+Panda TODO:
+
+- Discuss map serialization
+- Editor feature requests
+- Add textual readouts to editor (Current Coordinate)
+- Add textual readout to ui (Current funds, Cost per selected item)
