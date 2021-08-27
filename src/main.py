@@ -8,6 +8,7 @@ def main():
 	pygame.init()
 	window = pygame.display.set_mode(WINDOW_DIMENSIONS)
 	pygame.display.set_caption("Hostile Hospitality")
+	clock = pygame.Clock()
 
 
 	initInput()
@@ -18,6 +19,7 @@ def main():
 
 	isGameRunning = True
 	while isGameRunning:
+		clock.tick(60)
 
 		# Handle inputs
 		for event in pygame.event.get():
