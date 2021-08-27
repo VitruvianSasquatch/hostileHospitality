@@ -26,11 +26,15 @@ class World:
 		
 
 
+	def isInBounds(self, position):
+		x, y = position
+		return (0 <= x < self.width and 0 <= y < self.height)
+
 
 	# Places construct, returns whatever is overwritten
 	def placeConstruct(self, construct, position):
-		x, y = position
-		if (x < self.width and y < self.height):
+		if self._isInBounds(position):
+			x, y = position
 			oldConstruct = self.constructGrid[x][y]
 			self.constructGrid[x][y] = construct
 			return oldConstruct
@@ -40,11 +44,17 @@ class World:
 	def getCollisionGrid(self):
 		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]
 
+
 	def isCollision(self, position):
-		if self.constructGrid[i][j] is not None:
-			return self.constructGrid[i][j].getCollisionType()
+		
+		if self.isInBounds(position):
+			x, y = position
+			if self.constructGrid[x][y] is not None:
+				return self.constructGrid[x][y].getCollisionType()
+			else:
+				return False
 		else:
-			return False
+			return True #Outside bounds, collides as keepout
 
 
 	def getCoordinate(self, queryPosition, tileSize, viewOffset):
