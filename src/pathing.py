@@ -39,4 +39,4 @@ def test_pathing():
     print(route)
 
 
-test_pathing()
+#test_pathing()

@@ -3,7 +3,7 @@ import sys
 import pygame
 
 from world import *
-#from pathing import *
+import pathing
 
 TEAM_COLOURS = {"RED": (255, 0, 0), "BLUE": (0, 0, 255)}
 
@@ -16,9 +16,12 @@ class Enemy:
 		self.colour = TEAM_COLOURS[self.team]
 		self.health = 1
 		self.damage = 1
+		self.moveQueue = []
 		self.moveSpeed = 1 #full moves per second
-		self.timeSpentMoving = 0
 		self.destination = self.position
+
+		self.timeElapsedThisMove = float("inf") #Start having finished a move
+		self.drawPosition = self.position
 
 
 	#Returns whether it should be deleted
@@ -27,24 +30,43 @@ class Enemy:
 		return health <= 0
 
 
-	def isMoving(self)
-		return self.position == self.destination
-
-	def move(self, destination):
-		self.destination = destination
+	def isBetweenPositions(self):
+		return self.position != self.destination
 
 
-	def draw(self, surface, tileSize, dt):
-		self.timeSpentMoving += dt
-		fractionMoved = self.timeSpentMoving*self.moveSpeed
-		if fractionMoved >= 1: #Finished movement
-			self.position = self.destination
-			drawX, drawY = self.position[0], self.position[1]
-		else:
-			print("Animating")
-			drawX = self.position[0] + (self.destination[0] - self.position[0]) * fractionMoved
-			drawY = self.position[1] + (self.destination[1] - self.position[1]) * fractionMoved
+	def moveToDistant(self, destination):
+		self.moveQueue = pathing.walk_direct(self.position, destination)[1:] #Remove first entry, which is current location
+		self.moveToAdjacent(self.moveQueue[0])
+
+
+	def moveToAdjacent(self, destination):
+		if abs(self.position[0] - destination[0]) <= 1 and abs(self.position[1] - destination[1]) <= 1: #Is adjacent?
+			self.timeElapsedThisMove = 0
+			self.destination = destination
+
+
+	def update(self, dt):
+		if self.moveQueue == []:
+			self.drawPosition = self.position #Ensure no float error and do nothing
+		elif self.isBetweenPositions():
+
+			self.timeElapsedThisMove += dt
+			fractionMoved = self.timeElapsedThisMove*self.moveSpeed
+			if fractionMoved >= 1: #Finished movement
+				self.position = self.destination
+				self.drawPosition = self.position
+				self.moveQueue = self.moveQueue[1:] #remove first element, as now done
+			else:
+				drawX = self.position[0] + (self.destination[0] - self.position[0]) * fractionMoved
+				drawY = self.position[1] + (self.destination[1] - self.position[1]) * fractionMoved
+				self.drawPosition = (drawX, drawY)
 		
+		else: #finished current move, but there are still some in queue
+			self.moveToAdjacent(self.moveQueue[0])
+
+
+	def draw(self, surface, tileSize):
+		drawX, drawY = self.drawPosition
 		topLeft = drawX*tileSize, drawY*tileSize
 		topRight = (drawX+1)*tileSize, drawY*tileSize
 		bottom = drawX*tileSize + tileSize//2, (drawY+1)*tileSize
@@ -53,7 +75,7 @@ class Enemy:
 
 
 
-
+#TODO: Flesh out if even worth it. 
 class EliteEnemy(Enemy):
 	def __init__(self, team, position):
 		super(self).__init(self, team, position)

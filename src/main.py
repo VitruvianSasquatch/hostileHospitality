@@ -33,7 +33,7 @@ def main():
 	world.placeConstruct(construct, (6, 5))
 
 	enemy = Enemy("RED", (3, 4))
-	enemy.move((4, 5))
+	enemy.moveToDistant((7, 7))
 
 	viewOffset = (0, 0)
 
@@ -45,8 +45,10 @@ def main():
 		for event in pygame.event.get():
 			isGameRunning = handleEvent(event, buildMenu)
 
+		enemy.update(dt)
+
 		window.blit(world.draw(window, TILESIZE), viewOffset)
-		enemy.draw(window, TILESIZE, dt)
+		enemy.draw(window, TILESIZE)
 		buildMenu.draw(window)
 		pygame.display.flip()
 
