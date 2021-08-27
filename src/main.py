@@ -2,13 +2,16 @@ import os
 import sys
 import pygame
 
+from world import *
+
 WINDOW_DIMENSIONS = (800, 600) # VGA standard as default
+
 
 def main():
 	pygame.init()
 	window = pygame.display.set_mode(WINDOW_DIMENSIONS)
 	pygame.display.set_caption("Hostile Hospitality")
-	clock = pygame.Clock()
+	clock = pygame.time.Clock()
 
 
 	initInput()
@@ -46,17 +49,6 @@ def handleEvent(event):
 
 
 
-class World:
-
-	def __init__(self):
-		pass
-
-	def draw(self, window):
-		background = pygame.Surface(window.get_size()).convert()
-		background.fill((0, 128, 0)) # Placeholder green background, likely remove when tiling is written
-		window.blit(background, (0, 0))
-
-		
 
 
 
