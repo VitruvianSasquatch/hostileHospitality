@@ -40,6 +40,13 @@ class World:
 	def getCollisionGrid(self):
 		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]
 
+	def isCollision(self, position):
+		if self.constructGrid[i][j] is not None:
+			return self.constructGrid[i][j].getCollisionType()
+		else:
+			return False
+
+
 	def getCoordinate(self, queryPosition, tileSize, viewOffset):
 		x = (queryPosition[0] - viewOffset[0]) // tileSize
 		y = (queryPosition[1] - viewOffset[1]) // tileSize
