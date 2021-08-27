@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from construct import *
+from ui import *
 from world import *
 
 WINDOW_DIMENSIONS = (1280, 960) # VGA standard as default
@@ -18,6 +19,9 @@ def main():
 
 
 	initInput()
+
+	#Setup UI
+	buildMenu = BuildMenu((790, 840))
 
 	# Ensure map all fits on one screen
 	mapWidth, mapHeight = WINDOW_DIMENSIONS
@@ -36,9 +40,10 @@ def main():
 
 		# Handle inputs
 		for event in pygame.event.get():
-			isGameRunning = handleEvent(event) # I can't remember how to pass references in Python
+			isGameRunning = handleEvent(event, buildMenu)
 
 		world.draw(window, TILESIZE, (0, 0))
+		buildMenu.draw(window)
 		pygame.display.flip()
 
 	pygame.quit()
@@ -51,12 +56,17 @@ def initInput():
 	#TODO: Decide on and implement keyboard input options
 
 
-def handleEvent(event):
+def handleEvent(event, buildMenu):
 	if (event.type == pygame.QUIT):
 		print("Exiting")
-		return False # isGameRunning
-	else:
-		return True #FIXME: Pass state by reference
+		return False
+
+	elif (event.type == pygame.MOUSEBUTTONDOWN):
+		buildMenu.mouseEvent(event.pos)
+		# buildMenu.mouseEvent returns True if it handled the event					
+
+	return True
+
 
 
 
