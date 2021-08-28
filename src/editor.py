@@ -41,7 +41,7 @@ def main():
 	#mainFont = pygame.font.Font(defaultFontPath, 24)
 
 	# Setup map scroll coordinates
-	worldOffset = [0,0]
+	viewOffset = [0,0]
 	worldOffsetDt = [0,0]
 
 	# Setup selection coordinates
@@ -104,15 +104,16 @@ def main():
 				elif event.key == pygame.K_DOWN:
 					worldOffsetDt[1] += 1
 
-		worldOffset[0] += worldOffsetDt[0] * dt * 200
-		worldOffset[1] += worldOffsetDt[1] * dt * 200
+		viewOffsetDt = (int(worldOffsetDt[0] * dt * 200), int(worldOffsetDt[1] * dt * 200))
+		viewOffset = (viewOffset[0] + viewOffsetDt[0], viewOffset[1] + viewOffsetDt[1])
+		world.moveViewOffset(viewOffsetDt)
 
 		window.fill((0,0,0))
-		window.blit(world.draw(window, TILESIZE, True), worldOffset)
+		world.draw(window, TILESIZE)
 
 		if (currentCoords != (-1, -1)):
-			x = currentCoords[0] * TILESIZE + worldOffset[0]
-			y = currentCoords[1] * TILESIZE + worldOffset[1]
+			x = currentCoords[0] * TILESIZE + viewOffset[0]
+			y = currentCoords[1] * TILESIZE + viewOffset[1]
 			pygame.draw.rect(window, (200, 200, 200), (x, y, TILESIZE, TILESIZE), 5)
 		
 		# Current Coordinate Readout
