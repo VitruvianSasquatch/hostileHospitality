@@ -13,7 +13,7 @@ class Construct:
 		return self.colour
 
 	def getCollisionType(self):
-		return True
+		return 1.0
 		#TODO: Add other collision types, like 50% chance of noticing for pit traps. 
 		#return name of item hit
 
