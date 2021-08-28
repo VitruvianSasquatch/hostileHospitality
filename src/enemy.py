@@ -64,7 +64,7 @@ class Enemy:
 
 
 	def moveToEdge(self, destColumn, world):
-		self.moveQueue, pathing.bfs_path_to_side(self.position, destColumn, world)[1:]
+		self.moveQueue = pathing.bfs_path_to_side(self.position, destColumn, world)[1:]
 		if self.moveQueue != []:
 			self.moveToAdjacent(self.moveQueue[0])
 
@@ -96,10 +96,15 @@ class Enemy:
 		else: #finished current move, but there are still some in queue
 			for dungHeap in world.getConstructType(DungHeap):
 				if dungHeap.isInRange(self.position):
-					x, y = dungHeap.getCentre()
-					angle = random.unifom(0, 2*math.pi)
-					x += 2*math.cos(angle)
-					y += 2*math.sin(angle)
+					x, y = -1, -1
+					while world.isCollision((x, y)): #Make sure a path is findable - out of bounds will collide
+						x, y = dungHeap.getCentre()
+						angle = random.uniform(0, 2*math.pi)
+						x += int(2*dungHeap.effectRange*math.cos(angle))
+						y += int(2*dungHeap.effectRange*math.sin(angle))
+						x = max(0, x); x = min(world.width-1, x);
+						y = max(0, y); y = min(world.height-1, y);
+					print(x, y)
 					self.moveToDistant((x, y), world) #TODO: TEST ME!
 
 			self.moveToAdjacent(self.moveQueue[0])

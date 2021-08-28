@@ -95,6 +95,8 @@ def placeDefaultMap(world):
 	world.placeConstruct(Fence(), (6, 7))
 	world.placeConstruct(Fence(), (7, 8))
 
+	world.placeConstruct(DungHeap((3, 7)), (3, 7))
+	world.placeConstruct(DungHeap((10, 7)), (10, 7))
 
 
 def initInput():
