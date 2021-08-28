@@ -29,7 +29,9 @@ class World:
 								if not (dx == 0 and dy == 0):
 									if self.isInBounds((i+dx, j+dy)) and self.isCollision((i+dx, j+dy)):
 										edge = (centre[0] + dx*tileSize//2, centre[1] + dy*tileSize//2)
-										pygame.draw.line(surface, self.constructGrid[i][j].colour, centre, edge, tileSize//4)
+										thickness = (tileSize//4 if dx*dy == 0 else tileSize//3)
+										#thickness = tileSize//4
+										pygame.draw.line(surface, self.constructGrid[i][j].colour, centre, edge, thickness)
 					
 					else:
 						rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
