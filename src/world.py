@@ -33,7 +33,7 @@ class World:
 
 	# Places construct, returns whatever is overwritten
 	def placeConstruct(self, construct, position):
-		if self._isInBounds(position):
+		if self.isInBounds(position):
 			x, y = position
 			oldConstruct = self.constructGrid[x][y]
 			self.constructGrid[x][y] = construct
