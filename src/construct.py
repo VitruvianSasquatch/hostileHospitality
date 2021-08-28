@@ -3,6 +3,7 @@ import sys
 import pygame
 
 
+
 class Construct:
 
 	def __init__(self, colour, id=None):
@@ -15,16 +16,16 @@ class Construct:
 
 
 class Fence(Construct):
-	
-	COLOUR = (128, 64, 16)
 
 	def __init__(self):
-		Construct.__init__(self, self.COLOUR)
+		Construct.__init__(self, CONSTRUCT_COLOURS[Fence])
 
 
 class PitTrap(Construct):
-	
-	COLOUR = (255, 0, 0)
 
 	def __init__(self):
-		Construct.__init__(self, self.COLOUR)
+		Construct.__init__(self, CONSTRUCT_COLOURS[PitTrap])
+
+
+CONSTRUCT_COLOURS = {Fence: (128, 64, 16), 
+					 PitTrap: (255, 0, 0)}
