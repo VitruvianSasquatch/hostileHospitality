@@ -38,18 +38,26 @@ def main():
 	viewOffset = (0, 0)
 
 	isGameRunning = True
+	isEditing = True
+	
 	while isGameRunning:
 		dt = clock.tick(60) / 1000
 
 		# Handle inputs
-		for event in pygame.event.get():
-			isGameRunning = handleEvent(event, buildMenu)
+		
+		isGameRunning, worldHasFocus = handleInputs(world, buildMenu, viewOffset)
 
-		enemy.update(dt)
+		world.draw(window, TILESIZE, True)
 
-		window.blit(world.draw(window, TILESIZE), viewOffset)
-		enemy.draw(window, TILESIZE)
-		buildMenu.draw(window)
+		if isEditing:
+				
+			buildMenu.draw(window)
+
+		else:
+			enemy.update(dt)
+			enemy.draw(window, TILESIZE)
+
+
 		pygame.display.flip()
 
 	pygame.quit()
@@ -72,16 +80,29 @@ def initInput():
 	#TODO: Decide on and implement keyboard input options
 
 
-def handleEvent(event, buildMenu):
-	if (event.type == pygame.QUIT):
-		print("Exiting")
-		return False
 
-	elif (event.type == pygame.MOUSEBUTTONDOWN):
-		buildMenu.mouseEvent(event.pos)
-		# buildMenu.mouseEvent returns True if it handled the event					
 
-	return True
+def handleInputs(world, buildMenu, viewOffset):
+	isGameRunning = True
+	worldHasFocus = True #FIXME: Bad assumption, where should we store such things? 
+
+	for event in pygame.event.get():
+
+		if (event.type == pygame.QUIT):
+			isGameRunning = False
+
+		if event.type == pygame.MOUSEMOTION:
+			if (event.pos[0] > buildMenu.position[0] or event.pos[1] < buildMenu.position[1]):
+				worldHasFocus = False
+			world.gridCursorPosition = world.getCoordinate(event.pos, TILESIZE)
+
+
+		elif (event.type == pygame.MOUSEBUTTONDOWN):
+			buildMenu.mouseEvent(event.pos)
+			# buildMenu.mouseEvent returns True if it handled the event					
+
+	
+	return isGameRunning, worldHasFocus
 
 
 

@@ -11,8 +11,11 @@ class World:
 		self.width, self.height = size
 		self.constructGrid =  [[None for j in range(0, self.height)] for i in range(0, self.width)]
 
+		self.gridCursorPosition = (-1, -1)
+		self.viewOffset = (0, 0) #Pixels
 
-	def draw(self, window, tileSize):
+
+	def draw(self, window, tileSize, hasFocus):
 		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 		drawBackground(surface, (0, 128,0))
 
@@ -55,9 +58,9 @@ class World:
 			return True #Outside bounds, collides as keepout
 
 
-	def getCoordinate(self, queryPosition, tileSize, viewOffset):
-		x = (queryPosition[0] - viewOffset[0]) // tileSize
-		y = (queryPosition[1] - viewOffset[1]) // tileSize
+	def getCoordinate(self, queryPosition, tileSize):
+		x = (queryPosition[0] - self.viewOffset[0]) // tileSize
+		y = (queryPosition[1] - self.viewOffset[1]) // tileSize
 		return (int(x),int(y))
 
 	def toFile(self, filename):
