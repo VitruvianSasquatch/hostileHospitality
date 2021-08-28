@@ -89,7 +89,11 @@ class Enemy:
 		else: #finished current move, but there are still some in queue
 			for dungHeap in world.getConstructType(DungHeap):
 				if dungHeap.isInRange(self.position):
-					pass #self.moveToDistant(dungHeap.position, world)
+					x, y = dungHeap.getCentre()
+					angle = random.unifom(0, 2*math.pi)
+					x += 2*math.cos(angle)
+					y += 2*math.sin(angle)
+					self.moveToDistant((x, y)), world) #TODO: TEST ME!
 
 			self.moveToAdjacent(self.moveQueue[0])
 

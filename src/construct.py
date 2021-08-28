@@ -31,6 +31,9 @@ class Aoe(Construct):
 		dy = self.position[1] - testPosition[1]
 		return self.effectRange**2 >= dx**2 + dy**2
 
+	def getCentre(self):
+		return self.position
+
 class Fence(Construct):
 
 	def __init__(self):
@@ -59,8 +62,6 @@ class DungHeap(Aoe):
 	def __str__(self):
 		return "dung"
 
-	def perturbedPosition(self):
-		pass
 
 
 
