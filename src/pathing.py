@@ -32,16 +32,17 @@ def walk_direct(start_pos, end_pos, grid=None):
 
 
 #returns a path from start to finsih in tuples. Or None if it fails to make a route
-def bfs_path(num_rows, num_columns, start, finish):
+def bfs_path(num_rows, num_columns, start, finish, world):
 
     row_q = []
     column_q = []
 
     move_count = 0
-    movements = [start]
+    prev = []
+    prev_route = []
 
-    nodes_left_in_layer = 0
-    nodes_in_next_layer = 1
+    nodes_left_in_layer = 1
+    nodes_in_next_layer = 0
 
     found_finish = False
 
@@ -50,17 +51,17 @@ def bfs_path(num_rows, num_columns, start, finish):
     #n s e w
     dr = [-1,1,0,0]
     dc = [0,0,1,-1]
+
     row_q.append(start[0])
     column_q.append(start[1])
+    prev.append(start)  #(x, y , how we got here)
+    prev_route.append(None)
 
     visited[start[0]][start[1]] = True
 
-    print(visited)
-
     while (len(row_q) > 0):
-        r = row_q.pop()
-        c = column_q.pop()
-        print(r, c)
+        r = row_q.pop(0)
+        c = column_q.pop(0)
         if  r == finish[0] and c == finish[1]:
             found_finish = True
             break
@@ -69,32 +70,51 @@ def bfs_path(num_rows, num_columns, start, finish):
             rr = r + dr[i]
             cc = c + dc[i]
 
-            if rr<0 or cc<0 or rr>=num_rows or cc>=num_columns:
+            if rr<0 or cc<0:
+                continue
+            if rr>=num_rows or cc>=num_columns:
                 continue
 
             if visited[rr][cc] == True:
                 continue
 
-            #todo if obstacle continue
+            #if obstacle skip
+            if world.isCollision((rr,cc)):
+                continue
 
             row_q.append(rr)
             column_q.append(cc)
-            visited[r][c] = True
-
+            prev.append((rr, cc))
+            prev_route.append(prev.index((r,c)))
+            visited[rr][cc] = True
             nodes_in_next_layer +=1 
+
         #
         nodes_left_in_layer -= 1
         if nodes_left_in_layer == 0:
             nodes_left_in_layer = nodes_in_next_layer
             nodes_in_next_layer = 0
             move_count += 1
-            movements.append((rr, cc))
     if found_finish == True:
-        return movements
-        #fix movements
+        return reconstruct_path_bfs(start, finish, prev, prev_route)
     return None
 
 
+def reconstruct_path_bfs(s, e, prev, routes):
+    path = []
+    at_index = prev.index(e)
+    while(at_index != None):
+        path.append(prev[at_index])
+        at_index = routes[at_index]
+    path.reverse()
+    if path[0] != s:
+        print("character unable to find route.")
+        return None
+    return path
+
+
+
+#testing
 def test_walk_direct():
     start_pos = (0,0)
     end_pos = (3,8)
@@ -102,10 +122,15 @@ def test_walk_direct():
     print(route)
 
 def test_bfs():
-    path = bfs_path(3, 5, (0,0), (1,1))
+    R = 10
+    C = 10
+    s = (0,0)
+    e = (3,8)
+    world = World((R, C))
+    path = bfs_path(R, C, s, e, world)
+    print("bfs test result:")
     print(path)
-#def bfs_path(num_rows, num_columns, start, finish):
 
 
-#test_pathing()
-#test_bfs()
+if __name__ == "__main__":
+    test_bfs()
