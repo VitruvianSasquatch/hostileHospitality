@@ -32,7 +32,9 @@ def walk_direct(start_pos, end_pos, grid=None):
 
 
 #returns a path from start to finsih in tuples. Or None if it fails to make a route
-def bfs_path(num_rows, num_columns, start, finish, world):
+def bfs_path(start, finish, world):
+
+    num_rows, num_columns = world.width, world.height
 
     row_q = []
     column_q = []
@@ -70,10 +72,11 @@ def bfs_path(num_rows, num_columns, start, finish, world):
             rr = r + dr[i]
             cc = c + dc[i]
 
-            if rr<0 or cc<0:
-                continue
-            if rr>=num_rows or cc>=num_columns:
-                continue
+            #Bound checking included in isCollision()
+            #if rr<0 or cc<0:
+            #    continue
+            #if rr>=num_rows or cc>=num_columns:
+            #    continue
 
             if visited[rr][cc] == True:
                 continue
@@ -127,7 +130,7 @@ def test_bfs():
     s = (0,0)
     e = (3,8)
     world = World((R, C))
-    path = bfs_path(R, C, s, e, world)
+    path = bfs_path(s, e, world)
     print("bfs test result:")
     print(path)
 

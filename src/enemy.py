@@ -34,8 +34,9 @@ class Enemy:
 		return self.position != self.destination
 
 
-	def moveToDistant(self, destination):
-		self.moveQueue = pathing.walk_direct(self.position, destination)[1:] #Remove first entry, which is current location
+	def moveToDistant(self, destination, world):
+		#self.moveQueue = pathing.walk_direct(self.position, destination)[1:] #Remove first entry, which is current location
+		self.moveQueue = pathing.bfs_path(self.position, destination, world)[1:] #Remove first entry, which is current location
 		self.moveToAdjacent(self.moveQueue[0])
 
 

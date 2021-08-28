@@ -44,7 +44,7 @@ def main():
 	enemies.extend([Enemy("BLUE", (mapWidth-1, i)) for i in range(4, 9)])
 
 	for enemy in enemies:
-		enemy.moveToDistant((6, 8))
+		enemy.moveToDistant((6, 8), world)
 
 
 
