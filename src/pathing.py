@@ -73,10 +73,10 @@ def bfs_path(start, finish, world):
             cc = c + dc[i]
 
             #Bound checking included in isCollision()
-            #if rr<0 or cc<0:
-            #    continue
-            #if rr>=num_rows or cc>=num_columns:
-            #    continue
+            if rr<0 or cc<0:
+                continue
+            if rr>=num_rows or cc>=num_columns:
+                continue
 
             if visited[rr][cc] == True:
                 continue
