@@ -25,14 +25,7 @@ class World:
 					rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
 					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
 		
-		if hasFocus: #If mouse is over it, draw highlight
-			x = self.gridCursorPosition[0] * tileSize
-			y = self.gridCursorPosition[1] * tileSize
-			pygame.draw.rect(surface, (200, 200, 200), (x, y, tileSize, tileSize), 5)
-
-		window.blit(surface, self.viewOffset) #Inefficient, but easier
-		
-
+		return surface
 
 	def isInBounds(self, position):
 		x, y = position
@@ -69,6 +62,19 @@ class World:
 		x = (queryPosition[0] - self.viewOffset[0]) // tileSize
 		y = (queryPosition[1] - self.viewOffset[1]) // tileSize
 		return (int(x),int(y))
+
+	def toFile(self, filename):
+		with open(filename, 'w+') as file:
+			file.write("{},{}\n".format(self.width, self.height))
+			for y in range(self.height):
+				newLine = ""
+				for x in range(self.width):
+					if self.constructGrid[x][y] is None:
+						newLine += ' ,' 
+						continue
+					newLine += str(self.constructGrid[x][y].id) + ','
+				file.write(newLine[:-1]+"\n")
+		print("ConstructGrid written to {}".format(filename))
 
 
 def drawBackground(surface, colour):
