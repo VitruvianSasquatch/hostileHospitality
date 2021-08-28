@@ -18,6 +18,8 @@ class GameManager:
 		self.isPaused = False
 		self.isEditing = True
 
+		self.waveNumber = 0
+
 
 
 def main():
@@ -132,9 +134,18 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 				# Create list of AoE's from constructGrid
 				#dungheapList = world.getConstructType(DungHeap) #                                                    <----------------------------------------------------------- dungheap
 			
-				if not gameManager.isEditing: #We are at war!
-					enemies.extend([Enemy("RED", i, world) for i in range(4, 9)])
-					enemies.extend([Enemy("BLUE", i, world) for i in range(4, 9)])
+				if not gameManager.isEditing: #We are now at war!
+					gameManager.waveNumber += 1
+					
+					while enemies != []:
+						enemies.pop() #Inefficient, but otherwise doesn't overwrite reference
+
+					numEnemies = 2+gameManager.waveNumber
+					startY = world.height//2 - numEnemies//2
+					for i in range(0, numEnemies):
+						enemies.append(Enemy("RED", startY+i, world))
+						enemies.append(Enemy("BLUE", startY+i, world))
+
 					for enemy in enemies:
 						enemy.moveToDistant(enemy.finalDestination, world)
 				
