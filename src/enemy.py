@@ -93,7 +93,7 @@ class Enemy:
 					angle = random.unifom(0, 2*math.pi)
 					x += 2*math.cos(angle)
 					y += 2*math.sin(angle)
-					self.moveToDistant((x, y)), world) #TODO: TEST ME!
+					self.moveToDistant((x, y), world) #TODO: TEST ME!
 
 			self.moveToAdjacent(self.moveQueue[0])
 
