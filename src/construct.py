@@ -8,12 +8,13 @@ class Construct:
 
 	def __init__(self, colour):
 		self.colour = colour
+		self.collisionWeight = 1
 	
 	def getColour(self):
 		return self.colour
 
-	def getCollisionType(self):
-		return 1.0
+	def getCollisionWeight(self):
+		return self.collisionWeight
 		#TODO: Add other collision types, like 50% chance of noticing for pit traps. 
 		#return name of item hit
 

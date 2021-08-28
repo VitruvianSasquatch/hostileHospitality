@@ -62,25 +62,25 @@ class World:
 		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]
 
 
-	# def isCollision(self, position):
-		
-	# 	if self.isInBounds(position):
-	# 		x, y = position
-	# 		if self.constructGrid[x][y] is not None:
-	# 			return self.constructGrid[x][y].getCollisionType()
-	# 		else:
-	# 			return False
-	# 	else:
-	# 		return True #Outside bounds, collides as keepout
-
-
 	def isCollision(self, position):
 		
 		if self.isInBounds(position):
 			x, y = position
-			return type(self.constructGrid[x][y])
+			return self.constructGrid[x][y] is not None
 		else:
-			return Fence() #Outside bounds, collides as keepout
+			return True #Outside bounds, collides as keepout
+
+
+	def getCollisionWeight(self, position):
+		
+		if self.isInBounds(position):
+			x, y = position
+			if self.constructGrid[x][y] is not None:
+				return self.constructGrid[x][y].getCollisionWeight()
+			else:
+				return 0
+		else:
+			return float("inf") #Outside bounds, collides as keepout
 
 
 	def getCoordinate(self, queryPosition, tileSize):
