@@ -44,13 +44,13 @@ def main():
 
 		# Handle inputs
 		
-		isGameRunning, worldHasFocus = handleInputs(world, buildMenu)
+		isGameRunning = handleInputs(world, buildMenu)
 
-		world.draw(window, TILESIZE, True)
+		world.draw(window, TILESIZE)
 
 		if isEditing:
 			gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-			if not buildMenuHasMouseFocus(buildMenu): 
+			if True:#not buildMenuHasMouseFocus(buildMenu): 
 				#Draw cursor highlight
 				x = gridCursorPosition[0] * TILESIZE
 				y = gridCursorPosition[1] * TILESIZE
@@ -61,7 +61,6 @@ def main():
 		else:
 			enemy.update(dt)
 			enemy.draw(window, TILESIZE)
-
 
 		pygame.display.flip()
 
@@ -93,7 +92,6 @@ def buildMenuHasMouseFocus(buildMenu):
 
 def handleInputs(world, buildMenu):
 	isGameRunning = True
-	worldHasFocus = True #FIXME: Bad assumption, where should we store such things? 
 
 	for event in pygame.event.get():
 
@@ -101,17 +99,14 @@ def handleInputs(world, buildMenu):
 			isGameRunning = False
 
 		if event.type == pygame.MOUSEMOTION:
-			if (event.pos[0] > buildMenu.position[0] or event.pos[1] < buildMenu.position[1]):
-				worldHasFocus = False
-			world.gridCursorPosition = world.getCoordinate(event.pos, TILESIZE)
-
+			pass
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
 			buildMenu.mouseEvent(event.pos)
 			# buildMenu.mouseEvent returns True if it handled the event					
 
 	
-	return isGameRunning, worldHasFocus
+	return isGameRunning
 
 
 

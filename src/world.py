@@ -14,7 +14,7 @@ class World:
 		self.viewOffset = (0, 0) #Pixels
 
 
-	def draw(self, window, tileSize, hasFocus):
+	def draw(self, window, tileSize):
 		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 		drawBackground(surface, (0, 128,0))
 
@@ -24,7 +24,9 @@ class World:
 					rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
 					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
 		
-		return surface
+		window.blit(surface, self.viewOffset)
+
+
 
 	def isInBounds(self, position):
 		x, y = position
