@@ -1,6 +1,7 @@
 import os
 import sys
 import pygame
+from pygame.constants import BUTTON_RIGHT
 from pygame.image import save
 
 from construct import *
@@ -85,6 +86,15 @@ def main():
 					newConstruct = Construct(BLOCK_COLOURS[currentBlock], currentBlock)
 					coord = world.getCoordinate(event.pos, TILESIZE)
 					world.placeConstruct(newConstruct, coord)
+
+			elif event.type == pygame.MOUSEBUTTONDOWN and event.button == BUTTON_RIGHT:
+				if (event.pos[0] <= 280 and event.pos[1] >= 480):
+					pass
+				elif (event.pos[0] > 1180 and event.pos[1] > 910):
+					pass
+				else:
+					coord = world.getCoordinate(event.pos, TILESIZE)
+					world.placeConstruct(None, coord)
 
 			elif event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
