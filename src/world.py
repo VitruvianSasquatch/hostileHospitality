@@ -21,9 +21,9 @@ class World:
 		for i in range(0, self.width):
 			for j in range(0, self.height):
 				if self.constructGrid[i][j]:
+					centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
 
 					if type(self.constructGrid[i][j]) is Fence:
-						centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
 						pygame.draw.circle(surface, self.constructGrid[i][j].colour, centre, tileSize//3)
 						for dx in range(-1, 2):
 							for dy in range(-1, 2):
@@ -33,6 +33,14 @@ class World:
 										thickness = (tileSize//4 if dx*dy == 0 else tileSize//3)
 										#thickness = tileSize//4
 										pygame.draw.line(surface, self.constructGrid[i][j].getColour(), centre, edge, thickness)
+					
+					elif type(self.constructGrid[i][j] is TownCentre):
+						tempSurface = pygame.Surface((tileSize*self.width, tileSize*self.height))
+						tempSurface.set_alpha(70)
+						pygame.draw.circle(tempSurface, self.constructGrid[i][j].colour, centre, (tileSize//2) + tileSize*self.constructGrid[i][j].effectRange)
+						surface.blit(tempSurface, (0, 0))
+
+
 					
 					else:
 						rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)

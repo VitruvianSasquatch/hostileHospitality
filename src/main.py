@@ -43,7 +43,6 @@ def main():
 	placeDefaultMap(world)
 
 	enemies = []
-	townCentre = TownCentre((mapWidth//2, mapHeight//2))
 
 
 	gameManager = GameManager() #Simplifies input passing
@@ -90,14 +89,17 @@ def main():
 
 
 def placeDefaultMap(world):
+	centre = (world.width//2, world.height//2)
+	world.placeConstruct(TownCentre(centre), centre)
+
 	world.placeConstruct(Fence(), (5, 4))
 	world.placeConstruct(Fence(), (6, 5))
 	world.placeConstruct(Fence(), (6, 6))
 	world.placeConstruct(Fence(), (6, 7))
 	world.placeConstruct(Fence(), (7, 8))
 
-	world.placeConstruct(DungHeap((3, 7)), (3, 7))
-	world.placeConstruct(DungHeap((10, 7)), (10, 7))
+	#world.placeConstruct(DungHeap((3, 7)), (3, 7))
+	#world.placeConstruct(DungHeap((10, 7)), (10, 7))
 
 
 def initInput():
@@ -107,7 +109,7 @@ def initInput():
 
 
 
-def handleInputs(gameManager, world, enemies, townCentre, buildMenu):
+def handleInputs(gameManager, world, enemies, buildMenu):
 
 	for event in pygame.event.get():
 
@@ -154,7 +156,10 @@ def handleInputs(gameManager, world, enemies, townCentre, buildMenu):
 						enemy.moveToDistant(enemy.finalDestination, world)
 				
 				else: #Newly editing
-					townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
+					# in case we ever want two bases
+					townCentres = world.getConstructType(TownCentre)
+					for townCentre in townCentres:
+						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
 				
 
 

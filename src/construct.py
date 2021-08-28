@@ -53,10 +53,10 @@ class PitTrap(Construct):
 
 class TownCentre(Aoe):
 	def __init__(self, position):
-		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 7)
+		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 0)
 
 	def setRangeFromDifficulty(self, difficulty):
-		self.effectRange = 2 + difficulty/2
+		self.effectRange = difficulty/2
 
 class DungHeap(Aoe): 
 	def __init__(self, position):
