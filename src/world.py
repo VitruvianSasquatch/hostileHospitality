@@ -21,10 +21,16 @@ class World:
 		for i in range(0, self.width):
 			for j in range(0, self.height):
 				if self.constructGrid[i][j]:
-					rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
-					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
+					#rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
+					#pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
 
-					#pygame.draw.line(surface, self.constructGrid[i][j].colour, (tileSize*i, tileSize*j), (130,100))
+					centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
+					for dx in range(-1, 2):
+						for dy in range(-1, 2):
+							if not (dx == 0 and dy == 0):
+								if self.isInBounds((i+dx, j+dy)) and self.isCollision((i+dx, j+dy)):
+									edge = (centre[0] + dx*tileSize//2, centre[1] + dy*tileSize//2)
+									pygame.draw.line(surface, self.constructGrid[i][j].colour, centre, edge, tileSize//4)
 		
 		window.blit(surface, self.viewOffset)
 
