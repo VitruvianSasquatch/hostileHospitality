@@ -11,6 +11,15 @@ WINDOW_DIMENSIONS = (1280, 960)
 TILESIZE = 64
 
 
+class GameManager:
+	def __init__(self):
+		self.isRunning = True
+
+		self.isPaused = False
+		self.isEditing = True
+
+
+
 def main():
 	pygame.init()
 	window = pygame.display.set_mode(WINDOW_DIMENSIONS)
@@ -36,31 +45,40 @@ def main():
 
 
 
-	isGameRunning = True
-	isEditing = True
+	gameManager = GameManager() #Simplifies input passing
 	
-	while isGameRunning:
+	while gameManager.isRunning:
 		dt = clock.tick(60) / 1000
 
 		# Handle inputs
 		
-		isGameRunning = handleInputs(world, buildMenu)
+		handleInputs(gameManager, world, buildMenu)
 
 		world.draw(window, TILESIZE)
 
-		if isEditing:
-			gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-			if not buildMenu.getFocused(): #not buildMenuHasMouseFocus(buildMenu): 
-				#Draw cursor highlight
-				x = gridCursorPosition[0] * TILESIZE
-				y = gridCursorPosition[1] * TILESIZE
-				pygame.draw.rect(window, (200, 200, 200), (x, y, TILESIZE, TILESIZE), 5)
-
-			buildMenu.draw(window)
+		if gameManager.isPaused:
+			width, height = WINDOW_DIMENSIONS
+			thickness = width // 10
+			pygame.draw.rect(window, (200, 200, 200), (width//3, height//6, thickness, 2*height//3))
+			pygame.draw.rect(window, (200, 200, 200), (2*width//3, height//6, thickness, 2*height//3))
+			pass
 
 		else:
-			enemy.update(dt)
-			enemy.draw(window, TILESIZE)
+
+			if gameManager.isEditing:
+				gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
+				if not buildMenu.getFocused(): 
+					#Draw cursor highlight
+					x = gridCursorPosition[0] * TILESIZE
+					y = gridCursorPosition[1] * TILESIZE
+					pygame.draw.rect(window, (200, 200, 200), (x, y, TILESIZE, TILESIZE), 5)
+
+				buildMenu.draw(window)
+
+			else:
+				enemy.update(dt)
+				enemy.draw(window, TILESIZE)
+
 
 		pygame.display.flip()
 
@@ -85,28 +103,27 @@ def initInput():
 
 
 
-def buildMenuHasMouseFocus(buildMenu):
-	position = pygame.mouse.get_pos()
-	return (position[0] > buildMenu.position[0] or position[1] < buildMenu.position[1])
-
-
-def handleInputs(world, buildMenu):
-	isGameRunning = True
+def handleInputs(gameManager, world, buildMenu):
 
 	for event in pygame.event.get():
 
 		if (event.type == pygame.QUIT):
-			isGameRunning = False
+			gameManager.isRunning = False
 
-		if event.type == pygame.MOUSEMOTION:
+		elif event.type == pygame.MOUSEMOTION:
 			buildMenu.handleMouseMotion(event.pos)
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
-			buildMenu.handleMouseDown(event.pos)
-			# buildMenu.mouseEvent returns True if it handled the event					
+			buildMenu.handleMouseDown(event.pos) # buildMenu.mouseEvent returns True if it handled the event
+		
+		elif (event.type == pygame.KEYDOWN):
+			if (event.key == pygame.K_p):
+				gameManager.isPaused = not gameManager.isPaused
+			elif (event.key == pygame.K_SPACE):
+				gameManager.isEditing = not gameManager.isEditing
 
-	
-	return isGameRunning
+
+
 
 
 
