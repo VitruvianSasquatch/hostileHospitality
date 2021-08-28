@@ -35,7 +35,6 @@ def main():
 	enemy.moveToDistant((6, 8))
 
 
-	viewOffset = (0, 0)
 
 	isGameRunning = True
 	isEditing = True
@@ -45,12 +44,18 @@ def main():
 
 		# Handle inputs
 		
-		isGameRunning, worldHasFocus = handleInputs(world, buildMenu, viewOffset)
+		isGameRunning, worldHasFocus = handleInputs(world, buildMenu)
 
 		world.draw(window, TILESIZE, True)
 
 		if isEditing:
-				
+			gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
+			if not buildMenuHasMouseFocus(buildMenu): 
+				#Draw cursor highlight
+				x = gridCursorPosition[0] * TILESIZE
+				y = gridCursorPosition[1] * TILESIZE
+				pygame.draw.rect(window, (200, 200, 200), (x, y, TILESIZE, TILESIZE), 5)
+
 			buildMenu.draw(window)
 
 		else:
@@ -81,8 +86,12 @@ def initInput():
 
 
 
+def buildMenuHasMouseFocus(buildMenu):
+	position = pygame.mouse.get_pos()
+	return (position[0] > buildMenu.position[0] or position[1] < buildMenu.position[1])
 
-def handleInputs(world, buildMenu, viewOffset):
+
+def handleInputs(world, buildMenu):
 	isGameRunning = True
 	worldHasFocus = True #FIXME: Bad assumption, where should we store such things? 
 

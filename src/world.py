@@ -11,7 +11,6 @@ class World:
 		self.width, self.height = size
 		self.constructGrid =  [[None for j in range(0, self.height)] for i in range(0, self.width)]
 
-		self.gridCursorPosition = (-1, -1)
 		self.viewOffset = (0, 0) #Pixels
 
 
@@ -62,6 +61,7 @@ class World:
 		x = (queryPosition[0] - self.viewOffset[0]) // tileSize
 		y = (queryPosition[1] - self.viewOffset[1]) // tileSize
 		return (int(x),int(y))
+
 
 	def toFile(self, filename):
 		with open(filename, 'w+') as file:
