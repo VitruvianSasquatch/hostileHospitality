@@ -23,6 +23,8 @@ class World:
 				if self.constructGrid[i][j]:
 					rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
 					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
+
+					#pygame.draw.line(surface, self.constructGrid[i][j].colour, (tileSize*i, tileSize*j), (130,100))
 		
 		window.blit(surface, self.viewOffset)
 
@@ -63,6 +65,13 @@ class World:
 		x = (queryPosition[0] - self.viewOffset[0]) // tileSize
 		y = (queryPosition[1] - self.viewOffset[1]) // tileSize
 		return (int(x),int(y))
+
+
+	def moveViewOffset(self, delta):
+		x = self.viewOffset[0] + delta[0]
+		y = self.viewOffset[1] + delta[1]
+		self.viewOffset = (x, y)
+		#TODO: saturate and return whether it banded. 
 
 
 	def toFile(self, filename):
