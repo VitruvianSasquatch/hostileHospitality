@@ -40,8 +40,8 @@ def main():
 
 	placeDefaultMap(world)
 
-	enemies = [Enemy("RED", (0, i)) for i in range(4, 9)]
-	enemies.extend([Enemy("BLUE", (mapWidth-1, i)) for i in range(4, 9)])
+	enemies = [Enemy("RED", (0, i), world) for i in range(4, 9)]
+	enemies.extend([Enemy("BLUE", (mapWidth-1, i), world) for i in range(4, 9)])
 
 
 
@@ -132,8 +132,8 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 				# Create list of AoE's from constructGrid
 				dungheapList = world.getConstructType(DungHeap) #                                                    <----------------------------------------------------------- dungheap
 			
-				for enemy in enemies:
-					enemy.moveToDistant((6, 8), world)
+				#for enemy in enemies:
+					#enemy.moveToDistant((6, 8), world)
 				gameManager.isEditing = not gameManager.isEditing 
 
 
