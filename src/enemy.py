@@ -6,6 +6,8 @@ import math
 import random
 
 from world import *
+from construct import *
+
 import pathing
 
 TEAM_COLOURS = {"RED": (255, 0, 0), "BLUE": (0, 0, 255)}
@@ -15,7 +17,7 @@ BOUNCE_AMP = 0.2 #Tiles
 
 class Enemy:
 
-	def __init__(self, team, position):
+	def __init__(self, team, position, world):
 		self.team = team
 		self.position = position
 		self.colour = TEAM_COLOURS[self.team]
@@ -29,6 +31,10 @@ class Enemy:
 		self.drawPosition = self.position
 		self.animPhase = random.uniform(0, 1/BOUNCE_FREQ)
 
+		if self.team == "RED":
+			self.moveToDistant((world.width-1, world.height//2), world)
+		elif self.team == "BLUE":
+			self.moveToDistant((0, world.height//2), world)
 
 	#Returns whether it should be deleted
 	def takeDamage(self, damage):
@@ -70,6 +76,10 @@ class Enemy:
 				self.drawPosition = (drawX, drawY)
 		
 		else: #finished current move, but there are still some in queue
+			for dungHeap in world.getConstructType(DungHeap):
+				if dungHeap.isInRange(self.position):
+					pass
+
 			self.moveToAdjacent(self.moveQueue[0])
 
 
