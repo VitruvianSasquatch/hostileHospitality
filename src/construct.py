@@ -27,5 +27,12 @@ class PitTrap(Construct):
 		Construct.__init__(self, CONSTRUCT_COLOURS[PitTrap])
 
 
-CONSTRUCT_COLOURS = {Fence: (128, 64, 16), 
-					 PitTrap: (255, 0, 0)}
+CONSTRUCT_COLOURS = {
+	Fence: (128, 64, 16), 
+	PitTrap: (255, 0, 0)
+}
+
+CONSTRUCT_FROMID = {
+	1 : Fence(),
+	2 : PitTrap()
+}

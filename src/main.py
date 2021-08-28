@@ -118,8 +118,12 @@ def handleInputs(gameManager, world, buildMenu):
 			buildMenu.handleMouseMotion(event.pos)
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
-			buildMenu.handleMouseDown(event.pos) # buildMenu.mouseEvent returns True if it handled the event
-		
+			if buildMenu.handleMouseDown(event.pos): # buildMenu.mouseEvent passes if it handled event
+				continue
+			if buildMenu.getSelection() in CONSTRUCT_FROMID:
+				newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]
+				world.placeConstruct(newConstruct, world.getCoordinate(pygame.mouse.get_pos(), TILESIZE))
+
 		elif (event.type == pygame.KEYDOWN):
 			if (event.key == pygame.K_p):
 				gameManager.isPaused = not gameManager.isPaused

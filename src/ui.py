@@ -4,9 +4,9 @@ import pygame
 
 BUILDMENU_DIMENSIONS = (500,120)
 BUTTON_COLOURS = [
-	(255,0,0),
-	(0,255,0),
-	(0,0,255)
+	(0,0,0),
+	(128, 64, 16),
+	(255,0,0)
 ]
 
 class BuildMenu:
