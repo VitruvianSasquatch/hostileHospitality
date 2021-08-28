@@ -77,7 +77,7 @@ def main():
 
 			else:
 				for enemy in enemies:
-					enemy.update(dt)
+					enemy.update(dt, world)
 					enemy.draw(window, TILESIZE)
 
 
@@ -128,7 +128,6 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 				for enemy in enemies:
 					enemy.moveToDistant((6, 8), world)
 				gameManager.isEditing = not gameManager.isEditing
-
 
 
 

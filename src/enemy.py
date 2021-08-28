@@ -2,11 +2,16 @@ import os
 import sys
 import pygame
 
+import math
+import random
+
 from world import *
 import pathing
 
 TEAM_COLOURS = {"RED": (255, 0, 0), "BLUE": (0, 0, 255)}
 
+BOUNCE_FREQ = 3
+BOUNCE_AMP = 0.2 #Tiles
 
 class Enemy:
 
@@ -20,8 +25,9 @@ class Enemy:
 		self.moveSpeed = 1 #full moves per second
 		self.destination = self.position
 
-		self.timeElapsedThisMove = float("inf") #Start having finished a move
+		self.timeElapsedThisMove = 0
 		self.drawPosition = self.position
+		self.animPhase = random.uniform(0, 1/BOUNCE_FREQ)
 
 
 	#Returns whether it should be deleted
@@ -37,7 +43,8 @@ class Enemy:
 	def moveToDistant(self, destination, world):
 		#self.moveQueue = pathing.walk_direct(self.position, destination)[1:] #Remove first entry, which is current location
 		self.moveQueue = pathing.bfs_path(self.position, destination, world)[1:] #Remove first entry, which is current location
-		self.moveToAdjacent(self.moveQueue[0])
+		if self.moveQueue != []:
+			self.moveToAdjacent(self.moveQueue[0])
 
 
 	def moveToAdjacent(self, destination):
@@ -46,7 +53,7 @@ class Enemy:
 			self.destination = destination
 
 
-	def update(self, dt):
+	def update(self, dt, world):
 		if self.moveQueue == []:
 			self.drawPosition = self.position #Ensure no float error and do nothing
 		elif self.isBetweenPositions():
@@ -68,6 +75,7 @@ class Enemy:
 
 	def draw(self, surface, tileSize):
 		drawX, drawY = self.drawPosition
+		drawY -= BOUNCE_AMP*abs(math.sin(math.pi*BOUNCE_FREQ*(self.timeElapsedThisMove + self.animPhase))) #Add bounce - pi rather than 2pi because of abs
 		topLeft = drawX*tileSize, drawY*tileSize
 		topRight = (drawX+1)*tileSize, drawY*tileSize
 		bottom = drawX*tileSize + tileSize//2, (drawY+1)*tileSize
