@@ -32,9 +32,12 @@ class Enemy:
 		self.animPhase = random.uniform(0, 1/BOUNCE_FREQ)
 
 		if self.team == "RED":
-			self.moveToDistant((world.width-1, world.height//2), world)
+			self.finalDestination = (world.width-1, world.height//2)
 		elif self.team == "BLUE":
-			self.moveToDistant((0, world.height//2), world)
+			self.finalDestination =(0, world.height//2)
+
+		self.moveToDistant(self.finalDestination, world)
+		#self.moveToEdge(self.finalDestination[1], world)
 
 	#Returns whether it should be deleted
 	def takeDamage(self, damage):
@@ -53,6 +56,12 @@ class Enemy:
 			self.moveToAdjacent(self.moveQueue[0])
 
 
+	def moveToEdge(self, destColumn, world):
+		self.moveQueue, pathing.bfs_path_to_side(self.position, destColumn, world)[1:]
+		if self.moveQueue != []:
+			self.moveToAdjacent(self.moveQueue[0])
+
+
 	def moveToAdjacent(self, destination):
 		if abs(self.position[0] - destination[0]) <= 1 and abs(self.position[1] - destination[1]) <= 1: #Is adjacent?
 			self.timeElapsedThisMove = 0
@@ -62,6 +71,8 @@ class Enemy:
 	def update(self, dt, world):
 		if self.moveQueue == []:
 			self.drawPosition = self.position #Ensure no float error and do nothing
+			self.moveToDistant(self.finalDestination, world)
+			#self.moveToEdge(self.finalDestination[1], world)
 		elif self.isBetweenPositions():
 
 			self.timeElapsedThisMove += dt
@@ -78,7 +89,7 @@ class Enemy:
 		else: #finished current move, but there are still some in queue
 			for dungHeap in world.getConstructType(DungHeap):
 				if dungHeap.isInRange(self.position):
-					pass
+					pass #self.moveToDistant(dungHeap.position, world)
 
 			self.moveToAdjacent(self.moveQueue[0])
 

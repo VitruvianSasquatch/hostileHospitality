@@ -59,6 +59,9 @@ class DungHeap(Aoe):
 	def __str__(self):
 		return "dung"
 
+	def perturbedPosition(self):
+		pass
+
 
 
 
