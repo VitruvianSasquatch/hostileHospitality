@@ -104,7 +104,6 @@ class Enemy:
 						y += int(2*dungHeap.effectRange*math.sin(angle))
 						x = max(0, x); x = min(world.width-1, x);
 						y = max(0, y); y = min(world.height-1, y);
-					print(x, y)
 					self.moveToDistant((x, y), world) #TODO: TEST ME!
 
 			self.moveToAdjacent(self.moveQueue[0])

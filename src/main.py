@@ -117,15 +117,16 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 			buildMenu.handleMouseMotion(event.pos)
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
-			if buildMenu.handleMouseDown(event.pos): # buildMenu.mouseEvent passes if it handled event
-				continue
-			if buildMenu.getSelection() in CONSTRUCT_FROMID:
-				coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-				if buildMenu.getSelection() == 3: # If dungheap
-					newConstruct = CONSTRUCT_FROMID[3](coordinates)
-				else:
-					newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]()
-				world.placeConstruct(newConstruct, coordinates)
+			if gameManager.isEditing:
+				if buildMenu.handleMouseDown(event.pos): # buildMenu.mouseEvent passes if it handled event
+					continue
+				if buildMenu.getSelection() in CONSTRUCT_FROMID:
+					coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
+					if buildMenu.getSelection() == 3: # If dungheap
+						newConstruct = CONSTRUCT_FROMID[3](coordinates)
+					else:
+						newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]()
+					world.placeConstruct(newConstruct, coordinates)
 
 		elif (event.type == pygame.KEYDOWN):
 			if (event.key == pygame.K_p):
