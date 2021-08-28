@@ -93,6 +93,24 @@ class World:
 				file.write(newLine[:-1]+"\n")
 		print("ConstructGrid written to {}".format(filename))
 
+	def fromFile(self, filename):
+		with open(filename, 'r') as file:
+			width, height = file.readline()[:-1].split(',')
+			lines = file.readlines()
+		print("Read {} new width/height ({},{})\n".format(filename, width, height))
+
+		self.width, self.height = int(width), int(height)
+		self.ConstructGrid = [[None for j in range(0, self.height)] for i in range(0, self.width)]
+
+		for y,line in enumerate(lines):
+			for x,value in enumerate(line.split(',')[:-1]): #Strip newline character off
+				if value is ' ':
+					continue
+				newConstruct =  Construct((100,100,100), int(value))
+				self.placeConstruct(newConstruct, (x,y))
+
+
+
 
 def drawBackground(surface, colour):
 	background = surface.copy()

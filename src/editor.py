@@ -79,6 +79,8 @@ def main():
 				elif (event.pos[0] > 1180 and event.pos[1] > 910):
 					world.toFile(WORLDFILE)
 
+					world.fromFile(WORLDFILE)
+
 				else:
 					newConstruct = Construct(BLOCK_COLOURS[currentBlock], currentBlock)
 					coord = world.getCoordinate(event.pos, TILESIZE)
