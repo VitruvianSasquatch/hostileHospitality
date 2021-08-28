@@ -76,10 +76,19 @@ class Enemy:
 	def draw(self, surface, tileSize):
 		drawX, drawY = self.drawPosition
 		drawY -= BOUNCE_AMP*abs(math.sin(math.pi*BOUNCE_FREQ*(self.timeElapsedThisMove + self.animPhase))) #Add bounce - pi rather than 2pi because of abs
+		
 		topLeft = drawX*tileSize, drawY*tileSize
 		topRight = (drawX+1)*tileSize, drawY*tileSize
 		bottom = drawX*tileSize + tileSize//2, (drawY+1)*tileSize
 		pygame.draw.polygon(surface, self.colour, (topLeft, topRight, bottom))
+
+		r = min(255, self.colour[0]+64)
+		g = min(255, self.colour[1]+64)
+		b = min(255, self.colour[2]+64)
+		topLeft = topLeft[0]+tileSize/4.5, topLeft[1]+tileSize//6
+		topRight = topRight[0]-tileSize/4.5, topRight[1]+tileSize//6
+		bottom = bottom[0], bottom[1]-tileSize/3.5
+		pygame.draw.polygon(surface, (r, g, b), (topLeft, topRight, bottom))
 
 
 
