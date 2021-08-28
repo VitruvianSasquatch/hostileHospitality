@@ -80,7 +80,7 @@ class World:
 		#TODO: saturate and return whether it banded. 
 
 
-	def toFile(self, filename):
+	def writeToFile(self, filename):
 		with open(filename, 'w+') as file:
 			file.write("{},{}\n".format(self.width, self.height))
 			for y in range(self.height):
@@ -93,7 +93,7 @@ class World:
 				file.write(newLine[:-1]+"\n")
 		print("ConstructGrid written to {}".format(filename))
 
-	def fromFile(self, filename):
+	def readfromFile(self, filename):
 		with open(filename, 'r') as file:
 			width, height = file.readline()[:-1].split(',')
 			lines = file.readlines()
