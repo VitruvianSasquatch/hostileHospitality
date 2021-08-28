@@ -108,7 +108,7 @@ class World:
 		}
 		for y,line in enumerate(lines):
 			for x,value in enumerate(line.split(',')[:-1]): #Strip newline character off
-				if value is ' ':
+				if value == ' ':
 					continue
 				if value in constructs:
 					self.placeConstruct(constructs[value], (x,y))
