@@ -43,9 +43,6 @@ def main():
 	enemies = [Enemy("RED", (0, i)) for i in range(4, 9)]
 	enemies.extend([Enemy("BLUE", (mapWidth-1, i)) for i in range(4, 9)])
 
-	for enemy in enemies:
-		enemy.moveToDistant((6, 8), world)
-
 
 
 	gameManager = GameManager() #Simplifies input passing
@@ -55,7 +52,7 @@ def main():
 
 		# Handle inputs
 		
-		handleInputs(gameManager, world, buildMenu)
+		handleInputs(gameManager, world, enemies, buildMenu)
 
 		world.draw(window, TILESIZE)
 
@@ -107,7 +104,7 @@ def initInput():
 
 
 
-def handleInputs(gameManager, world, buildMenu):
+def handleInputs(gameManager, world, enemies, buildMenu):
 
 	for event in pygame.event.get():
 
@@ -128,6 +125,8 @@ def handleInputs(gameManager, world, buildMenu):
 			if (event.key == pygame.K_p):
 				gameManager.isPaused = not gameManager.isPaused
 			elif (event.key == pygame.K_SPACE):
+				for enemy in enemies:
+					enemy.moveToDistant((6, 8), world)
 				gameManager.isEditing = not gameManager.isEditing
 
 
