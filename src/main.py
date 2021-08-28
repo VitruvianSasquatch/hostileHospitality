@@ -43,6 +43,7 @@ def main():
 	placeDefaultMap(world)
 
 	enemies = []
+	townCentre = TownCentre((mapWidth//2, mapHeight//2))
 
 
 	gameManager = GameManager() #Simplifies input passing
@@ -106,7 +107,7 @@ def initInput():
 
 
 
-def handleInputs(gameManager, world, enemies, buildMenu):
+def handleInputs(gameManager, world, enemies, townCentre, buildMenu):
 
 	for event in pygame.event.get():
 
@@ -151,6 +152,9 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 
 					for enemy in enemies:
 						enemy.moveToDistant(enemy.finalDestination, world)
+				
+				else: #Newly editing
+					townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
 				
 
 

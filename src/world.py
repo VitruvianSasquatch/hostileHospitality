@@ -132,6 +132,7 @@ class World:
 					continue
 				newConstruct =  Construct((100,100,100), int(value))
 				self.placeConstruct(newConstruct, (x,y))
+				
 
 
 

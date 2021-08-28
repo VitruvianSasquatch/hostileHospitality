@@ -55,6 +55,9 @@ class TownCentre(Aoe):
 	def __init__(self, position):
 		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 7)
 
+	def setRangeFromDifficulty(self, difficulty):
+		self.effectRange = 2 + difficulty/2
+
 class DungHeap(Aoe): 
 	def __init__(self, position):
 		Aoe.__init__(self, CONSTRUCT_COLOURS[DungHeap], position, 2)
