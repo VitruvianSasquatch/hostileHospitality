@@ -13,6 +13,7 @@ class Construct:
 	def getCollisionType(self):
 		return True
 		#TODO: Add other collision types, like 50% chance of noticing for pit traps. 
+		#return name of item hit
 
 
 class Aoe(Construct):
@@ -36,21 +37,32 @@ class Fence(Construct):
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[Fence])
 
+	def __str__(self):
+		return "fence"
 
 class PitTrap(Construct):
 
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[PitTrap])
 
+	def __str__():
+		return "pit_trap"
+
 
 class TownCentre(Aoe):
 	def __init__(self, position):
 		Aoe.__init__(CONSRUCT_COLOUR[TownCentre], position, 7)
+
+	def __str__(self):
+		return "center"
 	
 
 class DungHeap(Aoe):
 	def __init__(self, position):
 		Aoe.__init__(CONSRUCT_COLOUR[DungHeap], position, 2)
+
+	def __str__(self):
+		return "dung"
 
 
 
