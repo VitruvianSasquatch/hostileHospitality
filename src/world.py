@@ -105,9 +105,16 @@ class World:
 		self.width, self.height = int(width), int(height)
 		self.ConstructGrid = [[None for j in range(0, self.height)] for i in range(0, self.width)]
 
+		constructs = {
+			'1' : Fence(),
+			'2' : PitTrap()
+		}
 		for y,line in enumerate(lines):
 			for x,value in enumerate(line.split(',')[:-1]): #Strip newline character off
-				if value is ' ':
+				if value == ' ':
+					continue
+				if value in constructs:
+					self.placeConstruct(constructs[value], (x,y))
 					continue
 				newConstruct =  Construct((100,100,100), int(value))
 				self.placeConstruct(newConstruct, (x,y))

@@ -78,9 +78,9 @@ def main():
 						print("Mouse out of bounds x: "+event.pos[0])
 
 				elif (event.pos[0] > 1180 and event.pos[1] > 910):
-					world.toFile(WORLDFILE)
+					world.writeToFile(WORLDFILE)
 
-					world.fromFile(WORLDFILE)
+					world.readfromFile(WORLDFILE)
 
 				else:
 					newConstruct = Construct(BLOCK_COLOURS[currentBlock], currentBlock)
