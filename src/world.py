@@ -24,6 +24,7 @@ class World:
 
 					if type(self.constructGrid[i][j]) is Fence:
 						centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
+						pygame.draw.circle(surface, self.constructGrid[i][j].colour, centre, tileSize//3)
 						for dx in range(-1, 2):
 							for dy in range(-1, 2):
 								if not (dx == 0 and dy == 0):
