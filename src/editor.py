@@ -60,7 +60,7 @@ def main():
 			if event.type == pygame.MOUSEMOTION:
 				if (event.pos[0] > 280 or event.pos[1] < 480):
 					currentCoords = (-1, -1)
-				currentCoords = world.getCoordinate(event.pos, TILESIZE, worldOffset)
+				currentCoords = world.getCoordinate(event.pos, TILESIZE)
 
 			elif event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_LEFT:
 				if (event.pos[0] <= 280 and event.pos[1] >= 480):
@@ -81,7 +81,7 @@ def main():
 
 				else:
 					newConstruct = Construct(BLOCK_COLOURS[currentBlock], currentBlock)
-					coord = world.getCoordinate(event.pos, TILESIZE, worldOffset)
+					coord = world.getCoordinate(event.pos, TILESIZE)
 					world.placeConstruct(newConstruct, coord)
 
 			elif event.type == pygame.KEYDOWN:
@@ -108,7 +108,7 @@ def main():
 		worldOffset[1] += worldOffsetDt[1] * dt * 200
 
 		window.fill((0,0,0))
-		window.blit(world.draw(window, TILESIZE), worldOffset)
+		window.blit(world.draw(window, TILESIZE, True), worldOffset)
 
 		if (currentCoords != (-1, -1)):
 			x = currentCoords[0] * TILESIZE + worldOffset[0]
