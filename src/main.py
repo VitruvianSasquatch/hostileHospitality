@@ -29,31 +29,52 @@ def main():
 	mapHeight //= TILESIZE
 	world = World((mapWidth, mapHeight))
 
-	construct = Construct((128, 64, 16))
-	world.placeConstruct(construct, (6, 5))
+	placeDefaultMap(world)
 
-	enemy = Enemy("RED", (3, 4))
-	enemy.moveToDistant((7, 8))
+	enemy = Enemy("RED", (9, 4))
+	enemy.moveToDistant((6, 8))
 
-	viewOffset = (0, 0)
+
 
 	isGameRunning = True
+	isEditing = True
+	
 	while isGameRunning:
 		dt = clock.tick(60) / 1000
 
 		# Handle inputs
-		for event in pygame.event.get():
-			isGameRunning = handleEvent(event, buildMenu)
+		
+		isGameRunning = handleInputs(world, buildMenu)
 
-		enemy.update(dt)
+		world.draw(window, TILESIZE)
 
-		window.blit(world.draw(window, TILESIZE), viewOffset)
-		enemy.draw(window, TILESIZE)
-		buildMenu.draw(window)
+		if isEditing:
+			gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
+			if True:#not buildMenuHasMouseFocus(buildMenu): 
+				#Draw cursor highlight
+				x = gridCursorPosition[0] * TILESIZE
+				y = gridCursorPosition[1] * TILESIZE
+				pygame.draw.rect(window, (200, 200, 200), (x, y, TILESIZE, TILESIZE), 5)
+
+			buildMenu.draw(window)
+
+		else:
+			enemy.update(dt)
+			enemy.draw(window, TILESIZE)
+
 		pygame.display.flip()
 
 	pygame.quit()
 	# implicit exit()
+
+
+
+def placeDefaultMap(world):
+	world.placeConstruct(Fence(), (5, 4))
+	world.placeConstruct(Fence(), (6, 5))
+	world.placeConstruct(Fence(), (6, 6))
+	world.placeConstruct(Fence(), (6, 7))
+	world.placeConstruct(Fence(), (7, 8))
 
 
 
@@ -63,16 +84,29 @@ def initInput():
 	#TODO: Decide on and implement keyboard input options
 
 
-def handleEvent(event, buildMenu):
-	if (event.type == pygame.QUIT):
-		print("Exiting")
-		return False
 
-	elif (event.type == pygame.MOUSEBUTTONDOWN):
-		buildMenu.mouseEvent(event.pos)
-		# buildMenu.mouseEvent returns True if it handled the event					
+def buildMenuHasMouseFocus(buildMenu):
+	position = pygame.mouse.get_pos()
+	return (position[0] > buildMenu.position[0] or position[1] < buildMenu.position[1])
 
-	return True
+
+def handleInputs(world, buildMenu):
+	isGameRunning = True
+
+	for event in pygame.event.get():
+
+		if (event.type == pygame.QUIT):
+			isGameRunning = False
+
+		if event.type == pygame.MOUSEMOTION:
+			pass
+
+		elif (event.type == pygame.MOUSEBUTTONDOWN):
+			buildMenu.mouseEvent(event.pos)
+			# buildMenu.mouseEvent returns True if it handled the event					
+
+	
+	return isGameRunning
 
 
 
