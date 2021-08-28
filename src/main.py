@@ -50,7 +50,7 @@ def main():
 
 		if isEditing:
 			gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-			if True:#not buildMenuHasMouseFocus(buildMenu): 
+			if not buildMenu.getFocused(): #not buildMenuHasMouseFocus(buildMenu): 
 				#Draw cursor highlight
 				x = gridCursorPosition[0] * TILESIZE
 				y = gridCursorPosition[1] * TILESIZE
@@ -99,10 +99,10 @@ def handleInputs(world, buildMenu):
 			isGameRunning = False
 
 		if event.type == pygame.MOUSEMOTION:
-			pass
+			buildMenu.handleMouseMotion(event.pos)
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
-			buildMenu.mouseEvent(event.pos)
+			buildMenu.handleMouseDown(event.pos)
 			# buildMenu.mouseEvent returns True if it handled the event					
 
 	

@@ -15,6 +15,7 @@ class BuildMenu:
 		self.position = position
 		self.uiSurface = pygame.Surface((0,0))
 		self.selection = None
+		self.isFocused = False
 
 		self.buttonRects = []
 		self.updateSurface(BUILDMENU_DIMENSIONS)
@@ -52,8 +53,14 @@ class BuildMenu:
 	def draw(self, window):
 		window.blit(self.uiSurface, self.position)
 
-	def mouseEvent(self, point):
-		if pygame.Rect(self.position, self.uiSurface.get_size()).collidepoint(point):
+	def getFocused(self):
+		return self.isFocused
+
+	def handleMouseMotion(self, point):
+		self.isFocused = pygame.Rect(self.position, self.uiSurface.get_size()).collidepoint(point)
+
+	def handleMouseDown(self, point):
+		if self.isFocused:
 			self.selection = None
 			for i,collider in enumerate(self.buttonRects):
 				if collider.move(self.position).collidepoint(point):
