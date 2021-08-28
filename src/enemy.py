@@ -17,9 +17,16 @@ BOUNCE_AMP = 0.2 #Tiles
 
 class Enemy:
 
-	def __init__(self, team, position, world):
+	def __init__(self, team, spawnY, world):
+		blueBaseCol = world.width-1
+		redBaseCol = 0
+
 		self.team = team
-		self.position = position
+		if self.team == "RED":
+			self.position = (redBaseCol, spawnY)
+		elif self.team == "BLUE":
+			self.position = (blueBaseCol, spawnY)
+
 		self.colour = TEAM_COLOURS[self.team]
 		self.health = 1
 		self.damage = 1
@@ -32,9 +39,9 @@ class Enemy:
 		self.animPhase = random.uniform(0, 1/BOUNCE_FREQ)
 
 		if self.team == "RED":
-			self.finalDestination = (world.width-1, world.height//2)
+			self.finalDestination = (blueBaseCol, world.height//2)
 		elif self.team == "BLUE":
-			self.finalDestination =(0, world.height//2)
+			self.finalDestination =(redBaseCol, world.height//2)
 
 		self.moveToDistant(self.finalDestination, world)
 		#self.moveToEdge(self.finalDestination[1], world)

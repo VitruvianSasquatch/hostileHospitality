@@ -22,7 +22,7 @@ class World:
 			for j in range(0, self.height):
 				if self.constructGrid[i][j]:
 
-					if type(self.constructGrid[i][j]) is Fence:
+					if False:#type(self.constructGrid[i][j]) is Fence:
 						centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
 						for dx in range(-1, 2):
 							for dy in range(-1, 2):
