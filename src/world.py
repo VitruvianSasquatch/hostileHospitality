@@ -23,8 +23,6 @@ class World:
 					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
 		
 		return surface
-		
-
 
 	def isInBounds(self, position):
 		x, y = position
@@ -61,6 +59,19 @@ class World:
 		x = (queryPosition[0] - viewOffset[0]) // tileSize
 		y = (queryPosition[1] - viewOffset[1]) // tileSize
 		return (int(x),int(y))
+
+	def toFile(self, filename):
+		with open(filename, 'w+') as file:
+			file.write("{},{}\n".format(self.width, self.height))
+			for y in range(self.height):
+				newLine = ""
+				for x in range(self.width):
+					if self.constructGrid[x][y] is None:
+						newLine += ' ,' 
+						continue
+					newLine += str(self.constructGrid[x][y].id) + ','
+				file.write(newLine[:-1]+"\n")
+		print("ConstructGrid written to {}".format(filename))
 
 
 def drawBackground(surface, colour):

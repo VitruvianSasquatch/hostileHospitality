@@ -5,8 +5,9 @@ import pygame
 
 class Construct:
 
-	def __init__(self, colour):
+	def __init__(self, colour, id=None):
 		self.colour = colour
+		self.id = id
 
 	def getCollisionType(self):
 		return True
