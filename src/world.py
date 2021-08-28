@@ -31,15 +31,17 @@ class World:
 										edge = (centre[0] + dx*tileSize//2, centre[1] + dy*tileSize//2)
 										thickness = (tileSize//4 if dx*dy == 0 else tileSize//3)
 										#thickness = tileSize//4
-										pygame.draw.line(surface, self.constructGrid[i][j].colour, centre, edge, thickness)
+										pygame.draw.line(surface, self.constructGrid[i][j].getColour(), centre, edge, thickness)
 					
 					else:
 						rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
-						pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
+						pygame.draw.rect(surface, self.constructGrid[i][j].getColour(), rect)
 			
 		window.blit(surface, self.viewOffset)
 
-
+	def getConstructType(self, classType):
+		dungheaps = [[cell for cell in line if type(cell) is classType] for line in self.constructGrid]
+		return sum(dungheaps, [])
 
 	def isInBounds(self, position):
 		x, y = position
@@ -112,7 +114,11 @@ class World:
 				if value == ' ':
 					continue
 				if int(value) in CONSTRUCT_FROMID:
-					self.placeConstruct(CONSTRUCT_FROMID[int(value)], (x,y))
+					if int(value) == 3: # AoE Special Case
+						newConstruct = CONSTRUCT_FROMID[int(value)](x,y) 
+					else:
+						newConstruct = CONSTRUCT_FROMID[int(value)]()
+					self.placeConstruct(newConstruct, (x,y))
 					continue
 				newConstruct =  Construct((100,100,100), int(value))
 				self.placeConstruct(newConstruct, (x,y))

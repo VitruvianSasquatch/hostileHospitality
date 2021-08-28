@@ -118,16 +118,23 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 			if buildMenu.handleMouseDown(event.pos): # buildMenu.mouseEvent passes if it handled event
 				continue
 			if buildMenu.getSelection() in CONSTRUCT_FROMID:
-				newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]
-				world.placeConstruct(newConstruct, world.getCoordinate(pygame.mouse.get_pos(), TILESIZE))
+				coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
+				if buildMenu.getSelection() == 3: # If dungheap
+					newConstruct = CONSTRUCT_FROMID[3](coordinates)
+				else:
+					newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]()
+				world.placeConstruct(newConstruct, coordinates)
 
 		elif (event.type == pygame.KEYDOWN):
 			if (event.key == pygame.K_p):
 				gameManager.isPaused = not gameManager.isPaused
 			elif (event.key == pygame.K_SPACE):
+				# Create list of AoE's from constructGrid
+				dungheapList = world.getConstructType(DungHeap) #                                                    <----------------------------------------------------------- dungheap
+			
 				for enemy in enemies:
 					enemy.moveToDistant((6, 8), world)
-				gameManager.isEditing = not gameManager.isEditing
+				gameManager.isEditing = not gameManager.isEditing 
 
 
 

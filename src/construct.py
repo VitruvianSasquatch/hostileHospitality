@@ -6,9 +6,11 @@ import pygame
 
 class Construct:
 
-	def __init__(self, colour, id=None):
+	def __init__(self, colour):
 		self.colour = colour
-		self.id = id
+	
+	def getColour(self):
+		return self.colour
 
 	def getCollisionType(self):
 		return True
@@ -27,10 +29,6 @@ class Aoe(Construct):
 		dx = self.position[0] - testPosition[0]
 		dy = self.position[1] - testPosition[1]
 		return self.effectRange**2 >= dx**2 + dy**2
-
-
-
-
 
 class Fence(Construct):
 
@@ -51,15 +49,11 @@ class PitTrap(Construct):
 
 class TownCentre(Aoe):
 	def __init__(self, position):
-		Aoe.__init__(CONSRUCT_COLOUR[TownCentre], position, 7)
+		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 7)
 
-	def __str__(self):
-		return "center"
-	
-
-class DungHeap(Aoe):
+class DungHeap(Aoe): 
 	def __init__(self, position):
-		Aoe.__init__(CONSRUCT_COLOUR[DungHeap], position, 2)
+		Aoe.__init__(self, CONSTRUCT_COLOURS[DungHeap], position, 2)
 
 	def __str__(self):
 		return "dung"
@@ -75,6 +69,7 @@ CONSTRUCT_COLOURS = {
 }
 
 CONSTRUCT_FROMID = {
-	1 : Fence(),
-	2 : PitTrap()
+	1 : Fence,
+	2 : PitTrap,
+	3 : DungHeap,
 }

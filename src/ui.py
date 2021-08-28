@@ -4,11 +4,16 @@ import pygame
 
 BUILDMENU_DIMENSIONS = (500,120)
 BUTTON_COLOURS = [
-	(0,0,0),
+	(70, 80, 0),
 	(128, 64, 16),
 	(255,0,0)
 ]
-
+BUTTON_MAPPING = {
+	None : None,
+	0 : 3, # Aoe
+	1 : 1, # Fence
+	2 : 2  # Wall
+}
 class BuildMenu:
 
 	def __init__(self, position):
@@ -25,7 +30,7 @@ class BuildMenu:
 		Gets current selection 
 		returns None if nothing selected
 		'''
-		return self.selection
+		return BUTTON_MAPPING[self.selection]
 
 	def updateSurface(self, dimensions):
 		newSurface = pygame.Surface(dimensions)
