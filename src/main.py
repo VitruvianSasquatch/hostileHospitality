@@ -40,8 +40,11 @@ def main():
 
 	placeDefaultMap(world)
 
-	enemy = Enemy("RED", (9, 4))
-	enemy.moveToDistant((6, 8))
+	enemies = [Enemy("RED", (0, i)) for i in range(4, 9)]
+	enemies.extend([Enemy("BLUE", (mapWidth-1, i)) for i in range(4, 9)])
+
+	for enemy in enemies:
+		enemy.moveToDistant((6, 8))
 
 
 
@@ -76,8 +79,9 @@ def main():
 				buildMenu.draw(window)
 
 			else:
-				enemy.update(dt)
-				enemy.draw(window, TILESIZE)
+				for enemy in enemies:
+					enemy.update(dt)
+					enemy.draw(window, TILESIZE)
 
 
 		pygame.display.flip()
