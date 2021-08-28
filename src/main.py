@@ -47,7 +47,7 @@ def main():
 		
 		isGameRunning, worldHasFocus = handleInputs(world, buildMenu, viewOffset)
 
-		window.blit(world.draw(window, TILESIZE, True), viewOffset)
+		world.draw(window, TILESIZE, True)
 
 		if isEditing:
 				
@@ -94,7 +94,7 @@ def handleInputs(world, buildMenu, viewOffset):
 		if event.type == pygame.MOUSEMOTION:
 			if (event.pos[0] > buildMenu.position[0] or event.pos[1] < buildMenu.position[1]):
 				worldHasFocus = False
-			world.gridCursorPosition = world.getCoordinate(event.pos, TILESIZE, viewOffset)
+			world.gridCursorPosition = world.getCoordinate(event.pos, TILESIZE)
 
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):

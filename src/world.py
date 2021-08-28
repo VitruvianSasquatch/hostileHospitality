@@ -12,6 +12,7 @@ class World:
 		self.constructGrid =  [[None for j in range(0, self.height)] for i in range(0, self.width)]
 
 		self.gridCursorPosition = (-1, -1)
+		self.viewOffset = (0, 0) #Pixels
 
 
 	def draw(self, window, tileSize, hasFocus):
@@ -29,7 +30,7 @@ class World:
 			y = self.gridCursorPosition[1] * tileSize
 			pygame.draw.rect(surface, (200, 200, 200), (x, y, tileSize, tileSize), 5)
 
-		return surface
+		window.blit(surface, self.viewOffset) #Inefficient, but easier
 		
 
 
@@ -64,9 +65,9 @@ class World:
 			return True #Outside bounds, collides as keepout
 
 
-	def getCoordinate(self, queryPosition, tileSize, viewOffset):
-		x = (queryPosition[0] - viewOffset[0]) // tileSize
-		y = (queryPosition[1] - viewOffset[1]) // tileSize
+	def getCoordinate(self, queryPosition, tileSize):
+		x = (queryPosition[0] - self.viewOffset[0]) // tileSize
+		y = (queryPosition[1] - self.viewOffset[1]) // tileSize
 		return (int(x),int(y))
 
 
