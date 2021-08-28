@@ -11,8 +11,10 @@ class World:
 		self.width, self.height = size
 		self.constructGrid =  [[None for j in range(0, self.height)] for i in range(0, self.width)]
 
+		self.gridCursorPosition = (-1, -1)
 
-	def draw(self, window, tileSize):
+
+	def draw(self, window, tileSize, hasFocus):
 		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 		drawBackground(surface, (0, 128,0))
 
@@ -22,6 +24,11 @@ class World:
 					rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
 					pygame.draw.rect(surface, self.constructGrid[i][j].colour, rect)
 		
+		if hasFocus: #If mouse is over it, draw highlight
+			x = self.gridCursorPosition[0] * tileSize
+			y = self.gridCursorPosition[1] * tileSize
+			pygame.draw.rect(surface, (200, 200, 200), (x, y, tileSize, tileSize), 5)
+
 		return surface
 		
 
