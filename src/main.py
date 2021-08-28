@@ -19,6 +19,7 @@ class GameManager:
 		self.isEditing = True
 
 		self.waveNumber = 0
+		self.isGameLost = False
 
 
 
@@ -28,6 +29,9 @@ def main():
 	pygame.display.set_caption("Hostile Hospitality")
 	clock = pygame.time.Clock()
 
+
+	mainFont = pygame.font.SysFont('Arial', 24, bold = True)
+	bigFont = pygame.font.SysFont('Arial', 200, bold = True)
 
 	initInput()
 
@@ -44,6 +48,7 @@ def main():
 
 	enemies = []
 
+	townCentre = world.getConstructType(TownCentre)[0] #For efficiency
 
 	gameManager = GameManager() #Simplifies input passing
 	
@@ -63,6 +68,15 @@ def main():
 			pygame.draw.rect(window, (200, 200, 200), (2*width//3, height//6, thickness, 2*height//3))
 			pass
 
+		elif gameManager.isGameLost:
+			
+
+			width, height = WINDOW_DIMENSIONS
+
+			xyTextSurface = bigFont.render(":'(", True, (128, 0, 0))
+			window.blit(xyTextSurface, ((width-xyTextSurface.get_width())//2, (height-xyTextSurface.get_height())//2))
+			pass
+
 		else:
 
 			if gameManager.isEditing:
@@ -79,6 +93,10 @@ def main():
 				for enemy in enemies:
 					enemy.update(dt, world)
 					enemy.draw(window, TILESIZE)
+				
+				if townCentre.isAbandoned():
+					gameManager.isGameLost = True
+		
 
 
 		pygame.display.flip()

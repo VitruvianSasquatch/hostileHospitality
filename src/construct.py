@@ -54,9 +54,17 @@ class PitTrap(Construct):
 class TownCentre(Aoe):
 	def __init__(self, position):
 		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 0)
+		self.citizenPatience = 50 #TODO: tune value
 
 	def setRangeFromDifficulty(self, difficulty):
 		self.effectRange = difficulty/2
+
+	def invade(self, enemy):
+		#Ignore enemy type for now
+		self.citizenPatience -= 1
+	
+	def isAbandoned(self):
+		return self.citizenPatience <= 0
 
 class DungHeap(Aoe): 
 	def __init__(self, position):

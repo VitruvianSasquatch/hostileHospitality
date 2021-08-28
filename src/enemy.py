@@ -93,7 +93,7 @@ class Enemy:
 				drawY = self.position[1] + (self.destination[1] - self.position[1]) * fractionMoved
 				self.drawPosition = (drawX, drawY)
 		
-		else: #finished current move, but there are still some in queue
+		else: #finished current move animation, but there are still some in queue
 			for dungHeap in world.getConstructType(DungHeap):
 				if dungHeap.isInRange(self.position):
 					x, y = -1, -1
@@ -105,6 +105,10 @@ class Enemy:
 						x = max(0, x); x = min(world.width-1, x);
 						y = max(0, y); y = min(world.height-1, y);
 					self.moveToDistant((x, y), world) #TODO: TEST ME!
+
+			for townCentre in world.getConstructType(TownCentre):
+				if townCentre.isInRange(self.position):
+					townCentre.invade(self)
 
 			self.moveToAdjacent(self.moveQueue[0])
 
