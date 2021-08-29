@@ -40,6 +40,9 @@ def main():
 
 	initInput()
 
+	dustClouds = [] #Unimportant
+
+
 	#Setup UI
 	buildMenu = BuildMenu((790, 840))
 
@@ -104,12 +107,23 @@ def main():
 					gameManager.isGameLost = True
 
 				for enemy in enemies:
+					opponent = enemy.testCombat(enemies)
+					if opponent is not None:
+						#Combat!
+						dustClouds.append(DustCloud(enemy.position))
+						enemies.remove(enemy)
+						enemies.remove(opponent)
 
 					enemy.update(dt, world)
 					enemy.draw(window, TILESIZE)
 					if enemy.isAtFinalDestination():
 						enemies.remove(enemy)
 				
+				for dustCloud in dustClouds:
+					if (not dustCloud.draw(window, TILESIZE, dt)):
+						dustClouds.remove(dustCloud)
+
+
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
 					gameManager.money += 2*gameManager.waveNumber
@@ -195,6 +209,24 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 				gameManager.timeScaling = 1
 
 
+
+
+class DustCloud:
+	def __init__(self, position):
+		self.position = position
+		self.t = 0
+
+
+	def draw(self, window, tileSize, dt):
+		self.t += dt
+		x, y = self.position
+		centre = x*tileSize + tileSize//2, y*tileSize +tileSize//2
+		centres = [((tileSize//4)*math.sin(6*self.t*i), (tileSize//4)*math.cos(6*self.t*i)) for i in range(1, 8)]
+		for point in centres:
+			movedCentre = centre[0] + point[0], centre[1] + point[1]
+			pygame.draw.circle(window, (200, 200, 200), movedCentre, tileSize/4)
+		
+		return not self.t > 0.8
 
 
 

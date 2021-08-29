@@ -48,9 +48,12 @@ class Enemy:
 		#self.moveToEdge(self.finalDestination[1], world)
 
 	#Returns whether it should be deleted
-	def takeDamage(self, damage):
-		self.health -= damage
-		return health <= 0
+	def testCombat(self, enemies):
+		for enemy in enemies:
+			if enemy.team != self.team:
+				if self.position == enemy.position:
+					return enemy
+		return None
 
 	def isBetweenPositions(self):
 		return self.position != self.destination
