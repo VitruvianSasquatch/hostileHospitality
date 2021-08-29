@@ -141,7 +141,7 @@ def main():
 						dustClouds.append(DustCloud(enemy.position))
 						enemies.remove(enemy)
 
-					playerStats.update(health=townCentre.citizenPatience)
+				playerStats.update(health=townCentre.citizenPatience)
 				
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
@@ -152,6 +152,8 @@ def main():
 
 					for townCentre in world.getConstructType(TownCentre):
 						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
+
+					playerStats.update(money=gameManager.money)
 				
 		
 
