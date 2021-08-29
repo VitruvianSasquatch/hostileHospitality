@@ -34,19 +34,27 @@ class World:
 										#thickness = tileSize//4
 										pygame.draw.line(surface, self.constructGrid[i][j].getColour(), centre, edge, thickness)
 					
-					elif type(self.constructGrid[i][j] is TownCentre):
+					elif issubclass(type(self.constructGrid[i][j]), Aoe):
 						tempSurface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 						tempSurface.set_colorkey((0, 0, 0))
 						tempSurface.fill((0, 0, 0))
 						tempSurface.set_alpha(70)
-
 						colour = self.constructGrid[i][j].colour
-						if self.constructGrid[i][j].damageFlash != 0:
-							colour = (255, 0, 0)
-							self.constructGrid[i][j].damageFlash -= 1
-							tempSurface.set_alpha(200)
+
+						if type(self.constructGrid[i][j]) is TownCentre:
+							if self.constructGrid[i][j].damageFlash != 0:
+								colour = (255, 0, 0)
+								self.constructGrid[i][j].damageFlash -= 1
+								tempSurface.set_alpha(200)
+						
 						pygame.draw.circle(tempSurface, colour, centre, (tileSize//2) + tileSize*self.constructGrid[i][j].effectRange)
 						surface.blit(tempSurface, (0, 0))
+
+						if type(self.constructGrid[i][j]) is DungHeap:
+							left = i*tileSize, (j+1)*tileSize
+							right = (i+1)*tileSize, (j+1)*tileSize
+							top = i*tileSize + tileSize//2, j*tileSize
+							pygame.draw.polygon(surface, self.constructGrid[i][j].colour, (left, top, right))
 
 
 					
