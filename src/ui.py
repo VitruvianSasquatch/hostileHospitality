@@ -17,11 +17,6 @@ BUTTON_MAPPING = {
 	1 : 1, # Fence
 	2 : 2  # Wall
 }
-BUTTON_COSTS = {
-	0 : 1,
-	1 : 1,
-	2 : 1
-}
 
 class BuildMenu:
 
@@ -68,7 +63,7 @@ class BuildMenu:
 
 			pygame.draw.rect(newSurface, BUTTON_COLOURS[self.selection], (400, 34, 50, 50))
 
-			costText = self.mainFont.render("Cost: "+str(BUTTON_COSTS[self.selection]), True, (255,255,255), (20,20,20))
+			costText = self.mainFont.render("Cost: "+str(CONSTRUCT_COST[self.getSelection()]), True, (255,255,255), (20,20,20))
 			costX, costY = costText.get_size()
 			newSurface.blit(costText, (425 - costX//2, 100 - costY//2))
 

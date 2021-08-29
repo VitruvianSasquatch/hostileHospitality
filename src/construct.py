@@ -109,7 +109,6 @@ CONSTRUCT_COLOURS = {
 	TownCentre: (255, 180, 0), 
 	DungHeap: (70, 80, 0)
 }
-
 CONSTRUCT_FROMID = {
 	1 : Fence,
 	2 : PitTrap,
@@ -119,4 +118,9 @@ CONSTRUCT_NAME = {
 	1 : "Fence",
 	2 : "Pit Trap",
 	3 : "Dung Heap"
+}
+CONSTRUCT_COST = {
+	1 : 1,
+	2 : 1,
+	3 : 3
 }

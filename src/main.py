@@ -193,7 +193,7 @@ def handleInputs(gameManager, world, enemies, buildMenu, playerStats):
 					continue
 				if buildMenu.getSelection() in CONSTRUCT_FROMID:
 					if gameManager.money > 0:
-						gameManager.money -= 1
+						gameManager.money -= CONSTRUCT_COST[buildMenu.getSelection()]
 						playerStats.update(money=gameManager.money)
 						coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
 						if buildMenu.getSelection() == 3: # If dungheap
