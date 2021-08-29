@@ -78,6 +78,9 @@ class World:
 			
 		window.blit(surface, self.viewOffset)
 
+	def getConstructGrid(self):
+		return self.constructGrid
+
 	def getConstructType(self, classType):
 		dungheaps = [[cell for cell in line if type(cell) is classType] for line in self.constructGrid]
 		return sum(dungheaps, [])
@@ -107,7 +110,6 @@ class World:
 				self.constructGrid[x][y] = construct
 				return oldConstruct
 		return None
-
 
 	def getCollisionGrid(self):
 		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionWeight()) for j in range(0, self.height)] for i in range(0, self.width)]
