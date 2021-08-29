@@ -2,6 +2,8 @@ import os
 import sys
 import pygame
 
+from construct import *
+
 BUILDMENU_DIMENSIONS = (500,120)
 PLAYERSTATS_DIMENSIONS = (150, 80)
 BUTTON_COLOURS = [
@@ -60,10 +62,15 @@ class BuildMenu:
 		if self.selection is None:
 			pygame.draw.rect(newSurface, (40, 40, 40), (400, 10, 50, 50))
 		else:
-			pygame.draw.rect(newSurface, BUTTON_COLOURS[self.selection], (400, 10, 50, 50))
-			text = self.mainFont.render("Cost: "+str(BUTTON_COSTS[1]), True, (255,255,255), (20,20,20))
-			textX, textY = self.mainFont.size("Cost: "+str(BUTTON_COSTS[1]))
-			newSurface.blit(text, (425 - textX//2, 80 - textY//2))
+			nameText = self.mainFont.render(CONSTRUCT_NAME[BUTTON_MAPPING[self.selection]], True, (200, 200, 200), (20, 20, 20))
+			nameX, nameY = nameText.get_size()
+			newSurface.blit(nameText, (425 - nameX//2, 3))
+
+			pygame.draw.rect(newSurface, BUTTON_COLOURS[self.selection], (400, 34, 50, 50))
+
+			costText = self.mainFont.render("Cost: "+str(BUTTON_COSTS[self.selection]), True, (255,255,255), (20,20,20))
+			costX, costY = costText.get_size()
+			newSurface.blit(costText, (425 - costX//2, 100 - costY//2))
 
 		self.uiSurface = newSurface
 

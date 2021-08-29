@@ -115,3 +115,8 @@ CONSTRUCT_FROMID = {
 	2 : PitTrap,
 	3 : DungHeap,
 }
+CONSTRUCT_NAME = {
+	1 : "Fence",
+	2 : "Pit Trap",
+	3 : "Dung Heap"
+}
