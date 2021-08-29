@@ -14,6 +14,12 @@ BUTTON_MAPPING = {
 	1 : 1, # Fence
 	2 : 2  # Wall
 }
+BUTTON_COSTS = {
+	0 : 1,
+	1 : 1,
+	2 : 1
+}
+
 class BuildMenu:
 
 	def __init__(self, position):
@@ -24,6 +30,8 @@ class BuildMenu:
 
 		self.buttonRects = []
 		self.updateSurface(BUILDMENU_DIMENSIONS)
+
+		self.mainFont = pygame.font.SysFont('Arial', 24, bold = True)
 
 	def getSelection(self):
 		'''
@@ -52,6 +60,9 @@ class BuildMenu:
 			pygame.draw.rect(newSurface, (40, 40, 40), (400, 10, 50, 50))
 		else:
 			pygame.draw.rect(newSurface, BUTTON_COLOURS[self.selection], (400, 10, 50, 50))
+			text = self.mainFont.render("Cost: "+str(BUTTON_COSTS[1]), True, (255,255,255), (20,20,20))
+			textX, textY = self.mainFont.size("Cost: "+str(BUTTON_COSTS[1]))
+			newSurface.blit(text, (425 - textX//2, 80 - textY//2))
 
 		self.uiSurface = newSurface
 

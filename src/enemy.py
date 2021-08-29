@@ -26,6 +26,7 @@ class Enemy:
 		self.damage = 1
 		self.moveSpeed = 1 #full moves per second
 		self.destination = self.position
+		self.prevPosition = None
 		self.pathArray = pathArray
 
 		self.timeElapsedThisMove = 0
@@ -71,7 +72,10 @@ class Enemy:
 		
 		else: #finished current move animation, but there are still some in queue
 			self.timeElapsedThisMove = 0
+			self.prevPosition = self.destination
 			self.destination = pathing.nextPosition(self.position, self.pathArray, world)
+			if self.destination == self.prevPosition:
+				self.pathArray[self.position[0]][self.position[1]] += 1
 
 			for townCentre in world.getConstructType(TownCentre):
 				if townCentre.isInRange(self.position):
