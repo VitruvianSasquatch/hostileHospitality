@@ -65,9 +65,10 @@ class World:
 	def placeConstruct(self, construct, position):
 		if self.isInBounds(position):
 			x, y = position
-			oldConstruct = self.constructGrid[x][y]
-			self.constructGrid[x][y] = construct
-			return oldConstruct
+			if type(self.constructGrid[x][y]) is not TownCentre:
+				oldConstruct = self.constructGrid[x][y]
+				self.constructGrid[x][y] = construct
+				return oldConstruct
 		return None
 
 
