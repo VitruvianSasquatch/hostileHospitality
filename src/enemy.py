@@ -26,6 +26,7 @@ class Enemy:
 		self.damage = 1
 		self.moveSpeed = 1 #full moves per second
 		self.destination = self.position
+		self.prevPosition = None
 		self.pathArray = pathArray
 
 		self.timeElapsedThisMove = 0
@@ -71,6 +72,7 @@ class Enemy:
 		
 		else: #finished current move animation, but there are still some in queue
 			self.timeElapsedThisMove = 0
+			self.prevPosition = self.destination
 			self.destination = pathing.nextPosition(self.position, self.pathArray, world)
 
 			for trapPosition in world.getConstructTypeLocs(PitTrap):
@@ -90,6 +92,10 @@ class Enemy:
 						y += int(2*dungHeap.effectRange*math.sin(angle))
 						x = max(0, x); x = min(world.width-1, x);
 						y = max(0, y); y = min(world.height-1, y);
+
+			if self.destination == self.prevPosition:
+				self.pathArray[self.position[0]][self.position[1]] += 1
+
 
 			for townCentre in world.getConstructType(TownCentre):
 				if townCentre.isInRange(self.position):
