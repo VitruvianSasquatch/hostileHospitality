@@ -98,7 +98,7 @@ def main():
 				#window.blit(moneyCount, (0, WINDOW_DIMENSIONS[1]-moneyCount.get_height()))
 
 				gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-				if not buildMenu.getFocused(): 
+				if not (buildMenu.getFocused() or playerStats.getFocused()): 
 					#Draw cursor highlight
 					x = gridCursorPosition[0] * TILESIZE
 					y = gridCursorPosition[1] * TILESIZE
@@ -185,6 +185,7 @@ def handleInputs(gameManager, world, enemies, buildMenu, playerStats):
 
 		elif event.type == pygame.MOUSEMOTION:
 			buildMenu.handleMouseMotion(event.pos)
+			playerStats.handleMouseMotion(event.pos)
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
 			if gameManager.isEditing:

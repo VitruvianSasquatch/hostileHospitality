@@ -135,4 +135,7 @@ class PlayerStats:
 	def handleMouseMotion(self, point):
 		self.isFocused = pygame.Rect(self.position, self.uiSurface.get_size()).collidepoint(point)
 
+	def getFocused(self):
+		return self.isFocused
+
 
