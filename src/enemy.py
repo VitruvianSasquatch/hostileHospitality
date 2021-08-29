@@ -30,7 +30,6 @@ class Enemy:
 		self.colour = TEAM_COLOURS[self.team]
 		self.health = 1
 		self.damage = 1
-		self.moveQueue = []
 		self.moveSpeed = 1 #full moves per second
 		self.destination = self.position
 		self.pathArray = pathArray
@@ -39,12 +38,13 @@ class Enemy:
 		self.drawPosition = self.position
 		self.animPhase = random.uniform(0, 1/BOUNCE_FREQ)
 
+		self.destination = pathing.nextPosition(self.position, self.pathArray, world)
 		if self.team == "RED":
 			self.finalDestination = (blueBaseCol, world.height//2)
 		elif self.team == "BLUE":
 			self.finalDestination =(redBaseCol, world.height//2)
 
-		self.moveToDistant(self.finalDestination, world)
+		#self.moveToDistant(self.finalDestination, world)
 		#self.moveToEdge(self.finalDestination[1], world)
 
 	#Returns whether it should be deleted
@@ -52,53 +52,30 @@ class Enemy:
 		self.health -= damage
 		return health <= 0
 
-
 	def isBetweenPositions(self):
 		return self.position != self.destination
-
-
-	def moveToDistant(self, destination, world):
-		#self.moveQueue = pathing.walk_direct(self.position, destination)[1:] #Remove first entry, which is current location
-		self.moveQueue = pathing.bfs_path(self.position, destination, world)[1:] #Remove first entry, which is current location
-		if self.moveQueue != []:
-			self.moveToAdjacent(self.moveQueue[0])
-
-
-	def moveToEdge(self, destColumn, world):
-		self.moveQueue = pathing.bfs_path_to_side(self.position, destColumn, world)[1:]
-		if self.moveQueue != []:
-			self.moveToAdjacent(self.moveQueue[0])
-
-
-	def moveToAdjacent(self, destination):
-		if abs(self.position[0] - destination[0]) <= 1 and abs(self.position[1] - destination[1]) <= 1: #Is adjacent?
-			self.timeElapsedThisMove = 0
-			self.destination = destination
-
 
 	def isAtFinalDestination(self):
 		return self.position == self.finalDestination
 
-
 	def update(self, dt, world):
-		if self.moveQueue == []:
-			self.drawPosition = self.position #Ensure no float error and do nothing
-			self.moveToDistant(self.finalDestination, world)
-			#self.moveToEdge(self.finalDestination[1], world)
-		elif self.isBetweenPositions():
+
+		if self.isBetweenPositions():
 
 			self.timeElapsedThisMove += dt
 			fractionMoved = self.timeElapsedThisMove*self.moveSpeed
 			if fractionMoved >= 1: #Finished movement
 				self.position = self.destination
 				self.drawPosition = self.position
-				self.moveQueue = self.moveQueue[1:] #remove first element, as now done
 			else:
 				drawX = self.position[0] + (self.destination[0] - self.position[0]) * fractionMoved
 				drawY = self.position[1] + (self.destination[1] - self.position[1]) * fractionMoved
 				self.drawPosition = (drawX, drawY)
 		
 		else: #finished current move animation, but there are still some in queue
+			self.timeElapsedThisMove = 0
+			self.destination = pathing.nextPosition(self.position, self.pathArray, world)
+
 			for dungHeap in world.getConstructType(DungHeap):
 				if dungHeap.isInRange(self.position):
 					x, y = -1, -1
@@ -109,13 +86,11 @@ class Enemy:
 						y += int(2*dungHeap.effectRange*math.sin(angle))
 						x = max(0, x); x = min(world.width-1, x);
 						y = max(0, y); y = min(world.height-1, y);
-					self.moveToDistant((x, y), world) #TODO: TEST ME!
 
 			for townCentre in world.getConstructType(TownCentre):
 				if townCentre.isInRange(self.position):
 					townCentre.invade(self)
 
-			self.moveToAdjacent(self.moveQueue[0])
 
 
 	def draw(self, surface, tileSize):

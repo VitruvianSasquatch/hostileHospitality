@@ -226,23 +226,25 @@ def calculatePathingArray(end, world):
 				outArray[x][y] = done[(x,y)]
 	return outArray
 
-def pathFromArray(start, array):
-	# End is implicitly a value of 0
-	current = start
-	path = [current]
-	while array[current[0]][current[1]] != 0:
-		x,y = current
-		minValue = array[x][y]
-		minIndex = None
-		available = min(
-			(x+1, y),
-			(x-1, y),
-			(x, y+1),
-			(x, y-1)
-		)
-		for i in range(4):
-			x,y = available[i]
-			if array[x][y] < minValue:
-				minIndex = i
-		current = available[minIndex]
-		path.append(current)
+def nextPosition(position, array, world):
+	width, height = world.getSize()
+	x,y = position
+	minDestination = array[x][y]
+	destination = (x,y)
+	options = [
+		[x, y+1],
+		[x, y-1],
+		[x+1, y],
+		[x-1, y],
+	]
+	for (x,y) in options:
+		if x < 0 or x >= width:
+			continue
+		if y < 0 or y >= height:
+			continue
+		if array[x][y] is None:
+			continue
+		if array[x][y] < minDestination:
+			minDestination = array[x][y]
+			destination = (x,y)
+	return destination

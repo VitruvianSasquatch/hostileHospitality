@@ -173,17 +173,14 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 						enemies.pop() #Inefficient, but otherwise doesn't overwrite reference
 
 					width, height = world.getSize()
-					redPath = calculatePathingArray((0, height//2), world)
-					bluePath = calculatePathingArray((width - 1, height//2), world)
+					redPath = calculatePathingArray((width - 1, height//2), world)
+					bluePath = calculatePathingArray((0, height//2), world)
 
 					numEnemies = 2+gameManager.waveNumber
 					startY = world.height//2 - numEnemies//2
 					for i in range(0, numEnemies):
 						enemies.append(Enemy("RED", startY+i, world, redPath))
 						enemies.append(Enemy("BLUE", startY+i, world, bluePath))
-
-					for enemy in enemies:
-						enemy.moveToDistant(enemy.finalDestination, world)
 					
 		elif (event.type == pygame.KEYUP):
 			if (event.key == pygame.K_f):
