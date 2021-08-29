@@ -285,6 +285,5 @@ def floodFillAvoid(position, radius, array):
 
 		currentTiles = list(set(nextTiles)) # Strip all duplicates
 		strength -= 1
-	return array
 
 	
