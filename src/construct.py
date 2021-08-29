@@ -51,7 +51,7 @@ class PitTrap(Construct):
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[PitTrap])
 		self.isFull = False
-		self.collisionWeight = 0.2
+		self.collisionWeight = 0
 
 	def isCollision(self):
 		return False
