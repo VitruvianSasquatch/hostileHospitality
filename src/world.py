@@ -3,6 +3,7 @@ import sys
 import pygame
 
 from construct import *
+from enemy import TEAM_COLOURS
 
 class World: 
 
@@ -21,7 +22,8 @@ class World:
 		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 		drawBackground(surface, (0, 128,0))
 
-
+		drawBase(surface, self.redBase, tileSize, TEAM_COLOURS["RED"])
+		drawBase(surface, self.blueBase, tileSize, TEAM_COLOURS["BLUE"])
 
 		for i in range(0, self.width):
 			for j in range(0, self.height):
@@ -195,7 +197,12 @@ def drawBackground(surface, colour):
 	surface.blit(background, (0, 0))
 
 
-def drawBase(surface, position, colour):
+def drawBase(surface, position, tileSize, colour):
 	x, y = position
 	centre = x*tileSize + tileSize//2, y*tileSize + tileSize//2
-	pygame.draw.line(surface, (50, 50, 50), position)
+	top = x*tileSize + tileSize//3, y*tileSize
+	bottom = centre[0], (y+1)*tileSize
+	middle = top[0]*0.3 + bottom[0]*0.7, top[1]*0.3 + bottom[1]*0.7
+	flagTip = (x+1)*tileSize, y*tileSize
+	pygame.draw.polygon(surface, colour, (top, flagTip, middle))
+	pygame.draw.line(surface, (50, 50, 50), top, bottom, width=4)
