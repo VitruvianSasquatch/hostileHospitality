@@ -6,7 +6,7 @@ BUILDMENU_DIMENSIONS = (500,120)
 BUTTON_COLOURS = [
 	(70, 80, 0),
 	(128, 64, 16),
-	(255,0,0)
+	(0,75, 0)
 ]
 BUTTON_MAPPING = {
 	None : None,

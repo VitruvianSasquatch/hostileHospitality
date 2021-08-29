@@ -49,9 +49,27 @@ class PitTrap(Construct):
 
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[PitTrap])
+		self.isFull = False
+		self.collisionWeight = 0
+
+	def isCollision(self):
+		return False
+
+	def getColour(self):
+		if self.isFull:
+			return (255, 0, 0)
+		else:
+			return self.colour
 
 	def __str__():
 		return "pit_trap"
+
+	def stepOn(self, enemy):
+		if not self.isFull:
+			self.isFull = True
+			return enemy
+		else:
+			return None
 
 
 class TownCentre(Aoe):
@@ -87,7 +105,7 @@ class DungHeap(Aoe):
 
 CONSTRUCT_COLOURS = {
 	Fence: (128, 64, 16), 
-	PitTrap: (255, 0, 0),
+	PitTrap: (0, 75, 0),
 	TownCentre: (255, 180, 0), 
 	DungHeap: (70, 80, 0)
 }

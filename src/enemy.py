@@ -73,6 +73,13 @@ class Enemy:
 			self.timeElapsedThisMove = 0
 			self.destination = pathing.nextPosition(self.position, self.pathArray, world)
 
+			for trapPosition in world.getConstructTypeLocs(PitTrap):
+				if self.position == trapPosition:
+					victim = world.constructGrid[trapPosition[0]][trapPosition[1]].stepOn(self)
+					if victim is not None:
+						return True
+						
+
 			for dungHeap in world.getConstructType(DungHeap):
 				if dungHeap.isInRange(self.position):
 					x, y = -1, -1
@@ -87,6 +94,8 @@ class Enemy:
 			for townCentre in world.getConstructType(TownCentre):
 				if townCentre.isInRange(self.position):
 					townCentre.invade(self)
+		
+		return False #Did not die
 
 
 

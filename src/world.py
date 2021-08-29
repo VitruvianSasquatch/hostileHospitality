@@ -24,6 +24,7 @@ class World:
 		for i in range(0, self.width):
 			for j in range(0, self.height):
 				if self.constructGrid[i][j]:
+					colour = self.constructGrid[i][j].getColour()
 					centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
 
 					if type(self.constructGrid[i][j]) is Fence:
@@ -35,14 +36,14 @@ class World:
 										edge = (centre[0] + dx*tileSize//2, centre[1] + dy*tileSize//2)
 										thickness = (tileSize//4 if dx*dy == 0 else tileSize//3)
 										#thickness = tileSize//4
-										pygame.draw.line(surface, self.constructGrid[i][j].getColour(), centre, edge, thickness)
-					
+										pygame.draw.line(surface, colour, centre, edge, thickness)
+
+
 					elif issubclass(type(self.constructGrid[i][j]), Aoe):
 						tempSurface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 						tempSurface.set_colorkey((0, 0, 0))
 						tempSurface.fill((0, 0, 0))
 						tempSurface.set_alpha(70)
-						colour = self.constructGrid[i][j].colour
 
 						if type(self.constructGrid[i][j]) is TownCentre:
 							if self.constructGrid[i][j].damageFlash != 0:
@@ -57,7 +58,7 @@ class World:
 							left = i*tileSize, (j+1)*tileSize
 							right = (i+1)*tileSize, (j+1)*tileSize
 							top = i*tileSize + tileSize//2, j*tileSize
-							pygame.draw.polygon(surface, self.constructGrid[i][j].colour, (left, top, right))
+							pygame.draw.polygon(surface, colour, (left, top, right))
 
 
 					
@@ -70,6 +71,15 @@ class World:
 	def getConstructType(self, classType):
 		dungheaps = [[cell for cell in line if type(cell) is classType] for line in self.constructGrid]
 		return sum(dungheaps, [])
+
+	def getConstructTypeLocs(self, classType):
+		locs = []
+		for i in range(self.width):
+			for j in range(self.height):
+				if type(self.constructGrid[i][j]) is classType:
+					locs.append((i, j))
+		return locs
+
 
 	def isInBounds(self, position):
 		x, y = position

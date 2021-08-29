@@ -123,9 +123,14 @@ def main():
 						enemies.remove(enemy)
 						enemies.remove(opponent)
 
-					enemy.update(dt, world)
+					justDied = enemy.update(dt, world)
+					if justDied:
+						dustClouds.append(DustCloud(enemy.position))
+						enemies.remove(enemy)
+
 					enemy.draw(window, TILESIZE)
 					if enemy.isAtFinalDestination():
+						dustClouds.append(DustCloud(enemy.position))
 						enemies.remove(enemy)
 				
 
@@ -133,8 +138,11 @@ def main():
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
 					gameManager.money += 2*gameManager.waveNumber
-					townCentres = world.getConstructType(TownCentre)
-					for townCentre in townCentres:
+					pitTraps = world.getConstructType(PitTrap)
+					for pitTrap in pitTraps:
+						pitTrap.isFull = False
+
+					for townCentre in world.getConstructType(TownCentre):
 						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
 				
 		
