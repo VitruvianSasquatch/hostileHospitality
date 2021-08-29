@@ -236,6 +236,10 @@ def nextPosition(position, array, world):
 		[x, y-1],
 		[x+1, y],
 		[x-1, y],
+		[x+1, y+1],
+		[x+1, y-1],
+		[x-1, y+1],
+		[x-1, y-1]
 	]
 	for (x,y) in options:
 		if x < 0 or x >= width:
@@ -244,7 +248,41 @@ def nextPosition(position, array, world):
 			continue
 		if array[x][y] is None:
 			continue
-		if array[x][y] < minDestination:
+		if array[x][y] <= minDestination:
 			minDestination = array[x][y]
 			destination = (x,y)
 	return destination
+
+def floodFillAvoid(position, radius, array):
+	width, height = len(array), len(array[0])
+	currentTiles = []
+	nextTiles = []
+	currentTiles.append(position)
+	strength = radius
+
+	while strength > 0:
+		for (x,y) in currentTiles:
+			if array[x][y] is not None:
+				array[x][y] += strength * 2
+			positions = [
+				[x+1, y],
+				[x-1, y],
+				[x, y+1],
+				[x, y-1],
+				[x+1, y+1],
+				[x+1, y-1],
+				[x-1, y+1],
+				[x-1, y-1]
+			]
+			for dx,dy in positions:
+				if dx < 0 or dx >= width:
+					continue
+				if dy < 0 or dx >= height:
+					continue
+				nextTiles.append((dx,dy))
+
+		currentTiles = list(set(nextTiles)) # Strip all duplicates
+		strength -= 1
+	return array
+
+	

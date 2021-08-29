@@ -204,6 +204,12 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 					redPath = calculatePathingArray(world.blueBase, world)
 					bluePath = calculatePathingArray(world.redBase, world)
 
+					dungheaps = world.getConstructType(DungHeap)
+					for dungheap in dungheaps:
+						x,y = dungheap.getCentre()
+						pathing.floodFillAvoid((x,y), 2, redPath)
+						pathing.floodFillAvoid((x,y), 2, bluePath)
+
 					numEnemies = 2+gameManager.waveNumber
 					startY = world.height//2 - numEnemies//2
 					for i in range(0, numEnemies):
