@@ -114,6 +114,14 @@ def main():
 				if townCentre.isAbandoned():
 					gameManager.isGameLost = True
 
+
+				for dungPosition in world.getConstructTypeLocs(DungHeap):
+					if townCentre.isInRange(dungPosition):
+						world.constructGrid[dungPosition[0]][dungPosition[1]] = None
+						dustClouds.append(DustCloud(dungPosition))
+
+
+
 				for enemy in enemies:
 					opponent = enemy.testCombat(enemies)
 					if opponent is not None:
