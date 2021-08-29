@@ -188,13 +188,13 @@ def reconstruct_path_bfs(s, e, prev, routes):
 		return None
 	return path
 
-def calculatePathingArray(end, width, height, world):
+def calculatePathingArray(end, world):
 	done = dict()
 	visited = [] #heap
 	heapq.heappush(visited, (0, end))
 
 	grid = world.getCollisionGrid()
-	print(len(grid), len(grid[0]))
+	width, height = world.getSize()
 
 	while visited:
 		target = heapq.heappop(visited)

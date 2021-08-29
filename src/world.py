@@ -58,6 +58,8 @@ class World:
 		x, y = position
 		return (0 <= x < self.width and 0 <= y < self.height)
 
+	def getSize(self):
+		return (self.width, self.height)
 
 	# Places construct, returns whatever is overwritten
 	def placeConstruct(self, construct, position):

@@ -17,7 +17,7 @@ BOUNCE_AMP = 0.2 #Tiles
 
 class Enemy:
 
-	def __init__(self, team, spawnY, world):
+	def __init__(self, team, spawnY, world, pathArray):
 		blueBaseCol = world.width-1
 		redBaseCol = 0
 
@@ -33,6 +33,7 @@ class Enemy:
 		self.moveQueue = []
 		self.moveSpeed = 1 #full moves per second
 		self.destination = self.position
+		self.pathArray = pathArray
 
 		self.timeElapsedThisMove = 0
 		self.drawPosition = self.position
