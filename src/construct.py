@@ -121,7 +121,7 @@ CONSTRUCT_NAME = {
 	3 : "Dung Heap"
 }
 CONSTRUCT_COST = {
-	1 : 1,
+	1 : 2,
 	2 : 1,
-	3 : 3
+	3 : 5
 }

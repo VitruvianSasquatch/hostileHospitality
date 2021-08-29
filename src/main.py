@@ -21,7 +21,7 @@ class GameManager:
 
 		self.timeScaling = 1
 
-		self.money = 6 #Or farmers, or biomass, who cares
+		self.money = 8 #Or farmers, or biomass, who cares
 
 		self.waveNumber = 0
 		self.isGameLost = False
@@ -145,7 +145,7 @@ def main():
 				
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
-					gameManager.money += 2*gameManager.waveNumber
+					gameManager.money += 3*gameManager.waveNumber
 					pitTraps = world.getConstructType(PitTrap)
 					for pitTrap in pitTraps:
 						pitTrap.isFull = False
@@ -194,7 +194,7 @@ def handleInputs(gameManager, world, enemies, buildMenu, playerStats):
 				if buildMenu.handleMouseDown(event.pos): # buildMenu.mouseEvent passes if it handled event
 					continue
 				if buildMenu.getSelection() in CONSTRUCT_FROMID:
-					if gameManager.money > 0:
+					if gameManager.money - CONSTRUCT_COST[buildMenu.getSelection()] >= 0:
 						gameManager.money -= CONSTRUCT_COST[buildMenu.getSelection()]
 						playerStats.update(money=gameManager.money)
 						coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
