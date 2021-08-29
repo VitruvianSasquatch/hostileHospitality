@@ -1,6 +1,7 @@
 import os
 import sys
 import pygame
+import heapq # Heap functionality
 
 from world import *
 
@@ -187,3 +188,32 @@ def reconstruct_path_bfs(s, e, prev, routes):
 		return None
 	return path
 
+def calculatePathingArray(end, width, height):
+	done = dict()
+	visited = [] #heap
+	heapq.heappush(visited, (0, end))
+
+	while visited:
+		target = heapq.heappop(visited)
+		index, (x,y) = target
+		if (x,y) in done:
+			continue
+		neighbours = [
+			(x + 1, y),
+			(x - 1, y),
+			(x, y + 1),
+			(x, y - 1)
+		]
+		for coord in neighbours:
+			if coord in done:
+				continue
+			if coord[0] < 0 or coord[0] > width:
+				continue
+			if coord[1] < 0 or coord[1] > height:
+				continue
+			heapq.heappush(visited, (index + 1, coord))
+
+		done[(x,y)] = index
+
+	outArray = [[done[(x,y)] for x in range(height)] for y in range(height)]
+	return outArray
