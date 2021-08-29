@@ -36,6 +36,8 @@ class World:
 					
 					elif type(self.constructGrid[i][j] is TownCentre):
 						tempSurface = pygame.Surface((tileSize*self.width, tileSize*self.height))
+						tempSurface.set_colorkey((0, 0, 0))
+						tempSurface.fill((0, 0, 0))
 						tempSurface.set_alpha(70)
 						pygame.draw.circle(tempSurface, self.constructGrid[i][j].colour, centre, (tileSize//2) + tileSize*self.constructGrid[i][j].effectRange)
 						surface.blit(tempSurface, (0, 0))
