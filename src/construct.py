@@ -8,7 +8,7 @@ class Construct:
 
 	def __init__(self, colour):
 		self.colour = colour
-		self.collisionWeight = 1
+		self.collisionWeight = 10
 	
 	def getColour(self):
 		return self.colour
@@ -41,7 +41,7 @@ class Fence(Construct):
 
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[Fence])
-		self.collisionWeight = 10
+		self.collisionWeight = 30
 
 	def __str__(self):
 		return "fence"
