@@ -216,7 +216,7 @@ def calculatePathingArray(end, world):
 				continue
 			elif grid[coord[0]][coord[1]] == False:
 				heapq.heappush(visited, (index + 1, coord))
-			elif grid[coord[0]][coord[1]] == True:
+			else:
 				heapq.heappush(visited, (index + world.getCollisionWeight(coord), coord))
 
 		done[(x,y)] = index
