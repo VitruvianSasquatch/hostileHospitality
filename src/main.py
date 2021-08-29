@@ -98,7 +98,7 @@ def main():
 				#window.blit(moneyCount, (0, WINDOW_DIMENSIONS[1]-moneyCount.get_height()))
 
 				gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-				if not buildMenu.getFocused(): 
+				if not (buildMenu.getFocused() or playerStats.getFocused()): 
 					#Draw cursor highlight
 					x = gridCursorPosition[0] * TILESIZE
 					y = gridCursorPosition[1] * TILESIZE
@@ -141,7 +141,7 @@ def main():
 						dustClouds.append(DustCloud(enemy.position))
 						enemies.remove(enemy)
 
-					playerStats.update(health=townCentre.citizenPatience)
+				playerStats.update(health=townCentre.citizenPatience)
 				
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
@@ -152,6 +152,8 @@ def main():
 
 					for townCentre in world.getConstructType(TownCentre):
 						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
+
+					playerStats.update(money=gameManager.money)
 				
 		
 
@@ -185,6 +187,7 @@ def handleInputs(gameManager, world, enemies, buildMenu, playerStats):
 
 		elif event.type == pygame.MOUSEMOTION:
 			buildMenu.handleMouseMotion(event.pos)
+			playerStats.handleMouseMotion(event.pos)
 
 		elif (event.type == pygame.MOUSEBUTTONDOWN):
 			if gameManager.isEditing:
@@ -192,7 +195,7 @@ def handleInputs(gameManager, world, enemies, buildMenu, playerStats):
 					continue
 				if buildMenu.getSelection() in CONSTRUCT_FROMID:
 					if gameManager.money > 0:
-						gameManager.money -= 1
+						gameManager.money -= CONSTRUCT_COST[buildMenu.getSelection()]
 						playerStats.update(money=gameManager.money)
 						coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
 						if buildMenu.getSelection() == 3: # If dungheap
