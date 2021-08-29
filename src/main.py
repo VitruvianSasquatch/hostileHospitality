@@ -42,9 +42,7 @@ def main():
 
 	dustClouds = [] #Unimportant
 
-
-	#Setup UI
-	buildMenu = BuildMenu((790, 840))
+	gameManager = GameManager() #Simplifies input passing
 
 	# Ensure map all fits on one screen
 	mapWidth, mapHeight = WINDOW_DIMENSIONS
@@ -56,10 +54,11 @@ def main():
 
 	enemies = []
 
-	townCentre = world.getConstructType(TownCentre)[0] #For efficiency
+	townCentre = world.getConstructType(TownCentre)[0] #For efficiency	
 
-	gameManager = GameManager() #Simplifies input passing
-	
+	#Setup UI
+	playerStats = PlayerStats((1130, 0), gameManager.money, townCentre.citizenPatience)
+	buildMenu = BuildMenu((790, 840))
 
 
 	while gameManager.isRunning:
@@ -67,7 +66,7 @@ def main():
 
 		# Handle inputs
 		
-		handleInputs(gameManager, world, enemies, buildMenu)
+		handleInputs(gameManager, world, enemies, buildMenu, playerStats)
 
 		world.draw(window, TILESIZE)
 
@@ -92,10 +91,11 @@ def main():
 				if (not dustCloud.draw(window, TILESIZE, dt)):
 					dustClouds.remove(dustCloud)
 
+			playerStats.draw(window)
 
 			if gameManager.isEditing:
-				moneyCount = mainFont.render(f"Remaining: ${gameManager.money}", True, (200, 200, 200))
-				window.blit(moneyCount, (0, WINDOW_DIMENSIONS[1]-moneyCount.get_height()))
+				#moneyCount = mainFont.render(f"Remaining: ${gameManager.money}", True, (200, 200, 200))
+				#window.blit(moneyCount, (0, WINDOW_DIMENSIONS[1]-moneyCount.get_height()))
 
 				gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
 				if not buildMenu.getFocused(): 
@@ -140,9 +140,9 @@ def main():
 					if enemy.isAtFinalDestination():
 						dustClouds.append(DustCloud(enemy.position))
 						enemies.remove(enemy)
+
+					playerStats.update(health=townCentre.citizenPatience)
 				
-
-
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
 					gameManager.money += 2*gameManager.waveNumber
@@ -176,7 +176,7 @@ def initInput():
 
 
 
-def handleInputs(gameManager, world, enemies, buildMenu):
+def handleInputs(gameManager, world, enemies, buildMenu, playerStats):
 
 	for event in pygame.event.get():
 
@@ -193,6 +193,7 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 				if buildMenu.getSelection() in CONSTRUCT_FROMID:
 					if gameManager.money > 0:
 						gameManager.money -= 1
+						playerStats.update(money=gameManager.money)
 						coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
 						if buildMenu.getSelection() == 3: # If dungheap
 							newConstruct = CONSTRUCT_FROMID[3](coordinates)

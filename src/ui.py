@@ -3,6 +3,7 @@ import sys
 import pygame
 
 BUILDMENU_DIMENSIONS = (500,120)
+PLAYERSTATS_DIMENSIONS = (150, 80)
 BUTTON_COLOURS = [
 	(70, 80, 0),
 	(128, 64, 16),
@@ -86,4 +87,45 @@ class BuildMenu:
 		else:
 			return False
 	
+
+class PlayerStats:
+
+	def __init__(self, position, money, health):
+		self.position = position
+		self.uiSurface = pygame.Surface((0,0))
+		self.isFocused = False
+
+		self.mainFont = pygame.font.SysFont('Arial', 24, bold = True)
+
+		self.update(money, health)
+
+	def update(self, money=None, health=None):
+		if money is not None:
+			self.money = money
+		if health is not None:
+			self.health = health
+		self.updateSurface()
+
+	def updateSurface(self):
+		money = self.money
+		health = self.health
+		newSurface = pygame.Surface(PLAYERSTATS_DIMENSIONS)
+		newSurface.fill((40,40,40))
+
+		#healthX, healthY = self.mainFont.size(Health: "+str(health))
+		healthText = self.mainFont.render("Health: "+str(health), True, (255,255,255), (40,40,40))
+		newSurface.blit(healthText, (20,10))
+
+		#fundsX, fundsY = self.mainFont.size("Funds: "+str(money))
+		fundsText = self.mainFont.render("Funds: "+str(money), True, (255,255,255), (40,40,40))
+		newSurface.blit(fundsText, (20, 44))
+
+		self.uiSurface = newSurface
+
+	def draw(self, window):
+		window.blit(self.uiSurface, self.position)
+
+	def handleMouseMotion(self, point):
+		self.isFocused = pygame.Rect(self.position, self.uiSurface.get_size()).collidepoint(point)
+
 
