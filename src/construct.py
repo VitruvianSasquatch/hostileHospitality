@@ -41,6 +41,7 @@ class Fence(Construct):
 
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[Fence])
+		self.collisionWeight = 10
 
 	def __str__(self):
 		return "fence"
@@ -50,7 +51,7 @@ class PitTrap(Construct):
 	def __init__(self):
 		Construct.__init__(self, CONSTRUCT_COLOURS[PitTrap])
 		self.isFull = False
-		self.collisionWeight = 0
+		self.collisionWeight = 0.2
 
 	def isCollision(self):
 		return False
