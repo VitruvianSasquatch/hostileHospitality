@@ -75,7 +75,10 @@ class World:
 		
 		if self.isInBounds(position):
 			x, y = position
-			return self.constructGrid[x][y] is not None
+			if self.constructGrid[x][y] is None:
+				return False
+			else:
+				return self.constructGrid[x][y].isCollision()
 		else:
 			return True #Outside bounds, collides as keepout
 

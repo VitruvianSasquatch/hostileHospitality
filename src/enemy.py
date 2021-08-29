@@ -75,6 +75,10 @@ class Enemy:
 			self.destination = destination
 
 
+	def isAtFinalDestination(self):
+		return self.position == self.finalDestination
+
+
 	def update(self, dt, world):
 		if self.moveQueue == []:
 			self.drawPosition = self.position #Ensure no float error and do nothing

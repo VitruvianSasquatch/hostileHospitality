@@ -13,6 +13,9 @@ class Construct:
 	def getColour(self):
 		return self.colour
 
+	def isCollision(self):
+		return True
+
 	def getCollisionWeight(self):
 		return self.collisionWeight
 		#TODO: Add other collision types, like 50% chance of noticing for pit traps. 
@@ -55,6 +58,9 @@ class TownCentre(Aoe):
 	def __init__(self, position):
 		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 0)
 		self.citizenPatience = 50 #TODO: tune value
+
+	def isCollision(self):
+		return False
 
 	def setRangeFromDifficulty(self, difficulty):
 		self.effectRange = difficulty/2

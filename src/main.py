@@ -73,7 +73,7 @@ def main():
 
 			width, height = WINDOW_DIMENSIONS
 
-			xyTextSurface = bigFont.render(":'(", True, (128, 0, 0))
+			xyTextSurface = bigFont.render("Defeat :'(", True, (128, 0, 0))
 			window.blit(xyTextSurface, ((width-xyTextSurface.get_width())//2, (height-xyTextSurface.get_height())//2))
 			pass
 
@@ -90,12 +90,22 @@ def main():
 				buildMenu.draw(window)
 
 			else:
-				for enemy in enemies:
-					enemy.update(dt, world)
-					enemy.draw(window, TILESIZE)
-				
 				if townCentre.isAbandoned():
 					gameManager.isGameLost = True
+
+				for enemy in enemies:
+
+					enemy.update(dt, world)
+					enemy.draw(window, TILESIZE)
+					if enemy.isAtFinalDestination():
+						enemies.remove(enemy)
+				
+				if enemies == []: #All either dead or off-screen
+					gameManager.isEditing = True
+					townCentres = world.getConstructType(TownCentre)
+					for townCentre in townCentres:
+						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
+				
 		
 
 
@@ -153,12 +163,10 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 			if (event.key == pygame.K_p):
 				gameManager.isPaused = not gameManager.isPaused
 			elif (event.key == pygame.K_SPACE):
-				gameManager.isEditing = not gameManager.isEditing 
+				if gameManager.isEditing: #Can only toggle when editing, otherwise must wait for wave to finish. 
+					gameManager.isEditing = not gameManager.isEditing 
 
-				# Create list of AoE's from constructGrid
-				#dungheapList = world.getConstructType(DungHeap) #                                                    <----------------------------------------------------------- dungheap
-			
-				if not gameManager.isEditing: #We are now at war!
+				#We are now at war: gameManager.isEditing == False
 					gameManager.waveNumber += 1
 					
 					while enemies != []:
@@ -172,13 +180,7 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 
 					for enemy in enemies:
 						enemy.moveToDistant(enemy.finalDestination, world)
-				
-				else: #Newly editing
-					# in case we ever want two bases
-					townCentres = world.getConstructType(TownCentre)
-					for townCentre in townCentres:
-						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
-				
+					
 
 
 
