@@ -263,7 +263,7 @@ def floodFillAvoid(position, radius, array):
 	while strength > 0:
 		for (x,y) in currentTiles:
 			if array[x][y] is not None:
-				array[x][y] += strength * 2
+				array[x][y] += strength
 			positions = [
 				[x+1, y],
 				[x-1, y],

@@ -142,6 +142,7 @@ def main():
 
 		pygame.display.flip()
 
+	pygame.font.quit() # Handle before primary exit
 	pygame.quit()
 	# implicit exit()
 
