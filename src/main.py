@@ -21,6 +21,8 @@ class GameManager:
 
 		self.timeScaling = 1
 
+		self.money = 6 #Or farmers, or biomass, who cares
+
 		self.waveNumber = 0
 		self.isGameLost = False
 
@@ -81,6 +83,9 @@ def main():
 		else:
 
 			if gameManager.isEditing:
+				moneyCount = mainFont.render(f"Remaining: ${gameManager.money}", True, (200, 200, 200))
+				window.blit(moneyCount, (0, WINDOW_DIMENSIONS[1]-moneyCount.get_height()))
+
 				gridCursorPosition = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
 				if not buildMenu.getFocused(): 
 					#Draw cursor highlight
@@ -107,6 +112,7 @@ def main():
 				
 				if enemies == []: #All either dead or off-screen
 					gameManager.isEditing = True
+					gameManager.money += 2*gameManager.waveNumber
 					townCentres = world.getConstructType(TownCentre)
 					for townCentre in townCentres:
 						townCentre.setRangeFromDifficulty(gameManager.waveNumber) #Increase for next round
@@ -148,12 +154,14 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 				if buildMenu.handleMouseDown(event.pos): # buildMenu.mouseEvent passes if it handled event
 					continue
 				if buildMenu.getSelection() in CONSTRUCT_FROMID:
-					coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
-					if buildMenu.getSelection() == 3: # If dungheap
-						newConstruct = CONSTRUCT_FROMID[3](coordinates)
-					else:
-						newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]()
-					world.placeConstruct(newConstruct, coordinates)
+					if gameManager.money > 0:
+						gameManager.money -= 1
+						coordinates = world.getCoordinate(pygame.mouse.get_pos(), TILESIZE)
+						if buildMenu.getSelection() == 3: # If dungheap
+							newConstruct = CONSTRUCT_FROMID[3](coordinates)
+						else:
+							newConstruct = CONSTRUCT_FROMID[buildMenu.getSelection()]()
+						world.placeConstruct(newConstruct, coordinates)
 
 		elif (event.type == pygame.KEYDOWN):
 			if (event.key == pygame.K_p):
