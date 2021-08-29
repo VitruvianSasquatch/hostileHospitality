@@ -70,7 +70,8 @@ class World:
 
 
 	def getCollisionGrid(self):
-		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]
+		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionWeight()) for j in range(0, self.height)] for i in range(0, self.width)]
+
 
 
 	def isCollision(self, position):
