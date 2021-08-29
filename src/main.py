@@ -60,6 +60,8 @@ def main():
 
 	gameManager = GameManager() #Simplifies input passing
 	
+
+
 	while gameManager.isRunning:
 		dt = clock.tick(60) / 1000
 
@@ -84,6 +86,12 @@ def main():
 			pass
 
 		else:
+
+			#Finish animation, as will eventually complete and disappear. 
+			for dustCloud in dustClouds:
+				if (not dustCloud.draw(window, TILESIZE, dt)):
+					dustClouds.remove(dustCloud)
+
 
 			if gameManager.isEditing:
 				moneyCount = mainFont.render(f"Remaining: ${gameManager.money}", True, (200, 200, 200))
@@ -111,6 +119,7 @@ def main():
 					if opponent is not None:
 						#Combat!
 						dustClouds.append(DustCloud(enemy.position))
+						dustClouds.append(DustCloud(opponent.position))
 						enemies.remove(enemy)
 						enemies.remove(opponent)
 
@@ -119,9 +128,6 @@ def main():
 					if enemy.isAtFinalDestination():
 						enemies.remove(enemy)
 				
-				for dustCloud in dustClouds:
-					if (not dustCloud.draw(window, TILESIZE, dt)):
-						dustClouds.remove(dustCloud)
 
 
 				if enemies == []: #All either dead or off-screen
@@ -195,14 +201,14 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 						enemies.pop() #Inefficient, but otherwise doesn't overwrite reference
 
 					width, height = world.getSize()
-					redPath = calculatePathingArray((width - 1, height//2), world)
-					bluePath = calculatePathingArray((0, height//2), world)
+					redPath = calculatePathingArray(world.blueBase, world)
+					bluePath = calculatePathingArray(world.redBase, world)
 
 					numEnemies = 2+gameManager.waveNumber
 					startY = world.height//2 - numEnemies//2
 					for i in range(0, numEnemies):
-						enemies.append(Enemy("RED", startY+i, world, redPath))
-						enemies.append(Enemy("BLUE", startY+i, world, bluePath))
+						enemies.append(Enemy("RED", (world.redBase[0], startY+i), world, redPath))
+						enemies.append(Enemy("BLUE", (world.blueBase[0], startY+i), world, bluePath))
 					
 		elif (event.type == pygame.KEYUP):
 			if (event.key == pygame.K_f):
@@ -226,7 +232,7 @@ class DustCloud:
 			movedCentre = centre[0] + point[0], centre[1] + point[1]
 			pygame.draw.circle(window, (200, 200, 200), movedCentre, tileSize/4)
 		
-		return not self.t > 0.8
+		return not self.t > 0.4
 
 
 

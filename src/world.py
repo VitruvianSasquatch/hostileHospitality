@@ -13,6 +13,9 @@ class World:
 
 		self.viewOffset = (0, 0) #Pixels
 
+		self.redBase = (0, self.height//2)
+		self.blueBase = (self.width-1, self.height//2)
+
 
 	def draw(self, window, tileSize):
 		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))

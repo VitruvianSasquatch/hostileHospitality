@@ -17,15 +17,9 @@ BOUNCE_AMP = 0.2 #Tiles
 
 class Enemy:
 
-	def __init__(self, team, spawnY, world, pathArray):
-		blueBaseCol = world.width-1
-		redBaseCol = 0
-
+	def __init__(self, team, position, world, pathArray):
+		self.position = position
 		self.team = team
-		if self.team == "RED":
-			self.position = (redBaseCol, spawnY)
-		elif self.team == "BLUE":
-			self.position = (blueBaseCol, spawnY)
 
 		self.colour = TEAM_COLOURS[self.team]
 		self.health = 1
@@ -40,9 +34,9 @@ class Enemy:
 
 		self.destination = pathing.nextPosition(self.position, self.pathArray, world)
 		if self.team == "RED":
-			self.finalDestination = (blueBaseCol, world.height//2)
+			self.finalDestination = world.blueBase
 		elif self.team == "BLUE":
-			self.finalDestination =(redBaseCol, world.height//2)
+			self.finalDestination = world.redBase
 
 		#self.moveToDistant(self.finalDestination, world)
 		#self.moveToEdge(self.finalDestination[1], world)
@@ -51,7 +45,7 @@ class Enemy:
 	def testCombat(self, enemies):
 		for enemy in enemies:
 			if enemy.team != self.team:
-				if self.position == enemy.position:
+				if self.position == enemy.position or self.destination == enemy.position:
 					return enemy
 		return None
 
