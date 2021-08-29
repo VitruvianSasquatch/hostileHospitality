@@ -220,19 +220,19 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 class DustCloud:
 	def __init__(self, position):
 		self.position = position
-		self.t = 0
+		self.t = 0.5
 
 
 	def draw(self, window, tileSize, dt):
 		self.t += dt
 		x, y = self.position
 		centre = x*tileSize + tileSize//2, y*tileSize +tileSize//2
-		centres = [((tileSize//4)*math.sin(6*self.t*i), (tileSize//4)*math.cos(6*self.t*i)) for i in range(1, 8)]
+		centres = [((tileSize//4)*math.sin(6*(self.t*i + 20)), (tileSize//4)*math.cos(6*(self.t*i + 20))) for i in range(1, 8)]
 		for point in centres:
 			movedCentre = centre[0] + point[0], centre[1] + point[1]
 			pygame.draw.circle(window, (200, 200, 200), movedCentre, tileSize/4)
 		
-		return not self.t > 0.4
+		return not self.t > 0.9
 
 
 
