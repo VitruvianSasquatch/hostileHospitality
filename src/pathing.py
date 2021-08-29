@@ -188,10 +188,13 @@ def reconstruct_path_bfs(s, e, prev, routes):
 		return None
 	return path
 
-def calculatePathingArray(end, width, height):
+def calculatePathingArray(end, world):
 	done = dict()
 	visited = [] #heap
 	heapq.heappush(visited, (0, end))
+
+	grid = world.getCollisionGrid()
+	width, height = world.getSize()
 
 	while visited:
 		target = heapq.heappop(visited)
@@ -207,13 +210,39 @@ def calculatePathingArray(end, width, height):
 		for coord in neighbours:
 			if coord in done:
 				continue
-			if coord[0] < 0 or coord[0] > width:
+			elif coord[0] < 0 or coord[0] >= width:
 				continue
-			if coord[1] < 0 or coord[1] > height:
+			elif coord[1] < 0 or coord[1] >= height:
 				continue
-			heapq.heappush(visited, (index + 1, coord))
+			elif grid[coord[0]][coord[1]] == False:
+				heapq.heappush(visited, (index + 1, coord))
 
 		done[(x,y)] = index
 
-	outArray = [[done[(x,y)] for x in range(height)] for y in range(height)]
+	outArray = [[None for y in range(height)] for x in range(width)]
+	for x in range(width):
+		for y in range(height):
+			if (x,y) in done:
+				outArray[x][y] = done[(x,y)]
 	return outArray
+
+def pathFromArray(start, array):
+	# End is implicitly a value of 0
+	current = start
+	path = [current]
+	while array[current[0]][current[1]] != 0:
+		x,y = current
+		minValue = array[x][y]
+		minIndex = None
+		available = min(
+			(x+1, y),
+			(x-1, y),
+			(x, y+1),
+			(x, y-1)
+		)
+		for i in range(4):
+			x,y = available[i]
+			if array[x][y] < minValue:
+				minIndex = i
+		current = available[minIndex]
+		path.append(current)

@@ -58,6 +58,8 @@ class World:
 		x, y = position
 		return (0 <= x < self.width and 0 <= y < self.height)
 
+	def getSize(self):
+		return (self.width, self.height)
 
 	# Places construct, returns whatever is overwritten
 	def placeConstruct(self, construct, position):
@@ -70,7 +72,8 @@ class World:
 
 
 	def getCollisionGrid(self):
-		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionType()) for j in range(0, self.height)] for i in range(0, self.width)]
+		return [[(False if self.constructGrid[i][j] is None else self.constructGrid[i][j].getCollisionWeight()) for j in range(0, self.height)] for i in range(0, self.width)]
+
 
 
 	def isCollision(self, position):
