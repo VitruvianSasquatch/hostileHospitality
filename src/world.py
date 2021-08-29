@@ -39,7 +39,13 @@ class World:
 						tempSurface.set_colorkey((0, 0, 0))
 						tempSurface.fill((0, 0, 0))
 						tempSurface.set_alpha(70)
-						pygame.draw.circle(tempSurface, self.constructGrid[i][j].colour, centre, (tileSize//2) + tileSize*self.constructGrid[i][j].effectRange)
+
+						colour = self.constructGrid[i][j].colour
+						if self.constructGrid[i][j].damageFlash != 0:
+							colour = (255, 0, 0)
+							self.constructGrid[i][j].damageFlash -= 1
+							tempSurface.set_alpha(200)
+						pygame.draw.circle(tempSurface, colour, centre, (tileSize//2) + tileSize*self.constructGrid[i][j].effectRange)
 						surface.blit(tempSurface, (0, 0))
 
 

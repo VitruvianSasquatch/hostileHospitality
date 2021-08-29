@@ -56,18 +56,20 @@ class PitTrap(Construct):
 
 class TownCentre(Aoe):
 	def __init__(self, position):
-		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 0)
+		Aoe.__init__(self, CONSTRUCT_COLOURS[TownCentre], position, 1)
 		self.citizenPatience = 50 #TODO: tune value
+		self.damageFlash = 0
 
 	def isCollision(self):
 		return False
 
 	def setRangeFromDifficulty(self, difficulty):
-		self.effectRange = difficulty/2
+		self.effectRange = 1+ difficulty/2
 
 	def invade(self, enemy):
 		#Ignore enemy type for now
 		self.citizenPatience -= 1
+		self.damageFlash = 10
 	
 	def isAbandoned(self):
 		return self.citizenPatience <= 0
