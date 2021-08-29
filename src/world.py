@@ -21,6 +21,8 @@ class World:
 		surface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 		drawBackground(surface, (0, 128,0))
 
+
+
 		for i in range(0, self.width):
 			for j in range(0, self.height):
 				if self.constructGrid[i][j]:
@@ -38,8 +40,17 @@ class World:
 										#thickness = tileSize//4
 										pygame.draw.line(surface, colour, centre, edge, thickness)
 
+					elif not issubclass(type(self.constructGrid[i][j]), Aoe):
+						rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
+						pygame.draw.rect(surface, self.constructGrid[i][j].getColour(), rect)
 
-					elif issubclass(type(self.constructGrid[i][j]), Aoe):
+
+		for i in range(0, self.width):
+			for j in range(0, self.height):
+				if self.constructGrid[i][j]:
+					colour = self.constructGrid[i][j].getColour()
+					centre = (tileSize*i + tileSize//2, tileSize*j + tileSize//2)
+					if issubclass(type(self.constructGrid[i][j]), Aoe):
 						tempSurface = pygame.Surface((tileSize*self.width, tileSize*self.height))
 						tempSurface.set_colorkey((0, 0, 0))
 						tempSurface.fill((0, 0, 0))
@@ -62,9 +73,6 @@ class World:
 
 
 					
-					else:
-						rect = pygame.Rect(tileSize*i, tileSize*j, tileSize, tileSize)
-						pygame.draw.rect(surface, self.constructGrid[i][j].getColour(), rect)
 			
 		window.blit(surface, self.viewOffset)
 
@@ -185,3 +193,9 @@ def drawBackground(surface, colour):
 	background = surface.copy()
 	background.fill(colour)
 	surface.blit(background, (0, 0))
+
+
+def drawBase(surface, position, colour):
+	x, y = position
+	centre = x*tileSize + tileSize//2, y*tileSize + tileSize//2
+	pygame.draw.line(surface, (50, 50, 50), position)
