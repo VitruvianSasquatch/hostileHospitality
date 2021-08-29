@@ -18,6 +18,8 @@ class GameManager:
 		self.isPaused = False
 		self.isEditing = True
 
+		self.timeScaling = 1
+
 		self.waveNumber = 0
 		self.isGameLost = False
 
@@ -69,8 +71,6 @@ def main():
 			pass
 
 		elif gameManager.isGameLost:
-			
-
 			width, height = WINDOW_DIMENSIONS
 
 			xyTextSurface = bigFont.render("Defeat :'(", True, (128, 0, 0))
@@ -89,7 +89,11 @@ def main():
 
 				buildMenu.draw(window)
 
-			else:
+			else: #At war!
+				if gameManager.timeScaling != 1:
+					dt *= gameManager.timeScaling
+					#Draw something?
+
 				if townCentre.isAbandoned():
 					gameManager.isGameLost = True
 
@@ -153,6 +157,10 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 		elif (event.type == pygame.KEYDOWN):
 			if (event.key == pygame.K_p):
 				gameManager.isPaused = not gameManager.isPaused
+
+			elif (event.key == pygame.K_f):
+				gameManager.timeScaling = 5
+
 			elif (event.key == pygame.K_SPACE):
 				if gameManager.isEditing: #Can only toggle when editing, otherwise must wait for wave to finish. 
 					gameManager.isEditing = not gameManager.isEditing 
@@ -172,8 +180,9 @@ def handleInputs(gameManager, world, enemies, buildMenu):
 					for enemy in enemies:
 						enemy.moveToDistant(enemy.finalDestination, world)
 					
-
-
+		elif (event.type == pygame.KEYUP):
+			if (event.key == pygame.K_f):
+				gameManager.timeScaling = 1
 
 
 
